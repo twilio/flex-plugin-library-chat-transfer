@@ -37,7 +37,9 @@ export interface Queue {
  * Currently not in use because of issue where TaskQueues will not show up
  * if they have not had a task assigned to them within the last 30 days...
  */
-const QueueInstantQuery = (queryExpression: string): Promise<{ [queueSid: string]: Queue }> => {
+const QueueInstantQuery = (
+  queryExpression: string
+): Promise<{ [queueSid: string]: Queue }> => {
   const { insightsClient } = Flex.Manager.getInstance();
   return new Promise(async (resolve, reject) => {
     try {
@@ -50,7 +52,9 @@ const QueueInstantQuery = (queryExpression: string): Promise<{ [queueSid: string
   });
 };
 
-const WorkerInstantQuery = (queryExpression: string): Promise<{ [workerSid: string]: any }> => {
+const WorkerInstantQuery = (
+  queryExpression: string
+): Promise<{ [workerSid: string]: any }> => {
   const { insightsClient } = Flex.Manager.getInstance();
   return new Promise(async (resolve, reject) => {
     try {
@@ -64,7 +68,11 @@ const WorkerInstantQuery = (queryExpression: string): Promise<{ [workerSid: stri
 };
 
 export const getWorkerFriendlyName = (worker: Worker) => {
-  return worker?.attributes?.public_identity || worker?.attributes?.full_name?.split(' ')?.[0] || 'Support Desk';
+  return (
+    worker?.attributes?.public_identity ||
+    worker?.attributes?.full_name?.split(' ')?.[0] ||
+    'Support Desk'
+  );
 };
 
 class ChatTransferService extends ApiService {
@@ -76,11 +84,15 @@ class ChatTransferService extends ApiService {
   async executeChatTransfer(
     task: Flex.ITask,
     transferTargetSid: string,
-    options?: TransferOptions,
+    options?: TransferOptions
   ): Promise<CreateTransferTaskResponse> {
     try {
-      const workerResult = await WorkerInstantQuery(`data.worker_sid EQ "${transferTargetSid}"`);
-      const workerFriendlyName = getWorkerFriendlyName(workerResult[transferTargetSid]);
+      const workerResult = await WorkerInstantQuery(
+        `data.worker_sid EQ "${transferTargetSid}"`
+      );
+      const workerFriendlyName = getWorkerFriendlyName(
+        workerResult[transferTargetSid]
+      );
 
       /**
        * Originally we want to use the QueueInstantQuery to lookup
@@ -109,7 +121,9 @@ class ChatTransferService extends ApiService {
       } = await this.createTransferTask(task, transferTargetSid, queueName);
       if (success) {
         // notify the channel that a transfer was started
-        const transferTarget = transferTargetSid.startsWith('WK') ? workerFriendlyName : queueName;
+        const transferTarget = transferTargetSid.startsWith('WK')
+          ? workerFriendlyName
+          : queueName;
         Flex.Actions.invokeAction('SendMessage', {
           conversationSid: task.attributes.channelSid,
           body: `${options?.mode.toLowerCase()} transfer to \"${transferTarget}\" initiated`,
@@ -124,17 +138,25 @@ class ChatTransferService extends ApiService {
             transferType: options?.mode,
           },
         };
-        const success = await TaskService.updateTaskAttributes(task.taskSid, updatedTaskAttributes);
+        const success = await TaskService.updateTaskAttributes(
+          task.taskSid,
+          updatedTaskAttributes
+        );
         if (!success) {
           // in the unlikely event we were unable to update the task notify the user
-          Flex.Notifications.showNotification(ChatTransferNotification.ErrorUpdatingTaskForChatTransfer);
+          Flex.Notifications.showNotification(
+            ChatTransferNotification.ErrorUpdatingTaskForChatTransfer
+          );
         }
         if (options?.mode === 'COLD') {
           // for cold transfers we move the task to wrapup immediately
           Flex.Actions.invokeAction('WrapupTask', { task });
         }
       } else {
-        Flex.Notifications.showNotification(ChatTransferNotification.ErrorTransferringChat, { message });
+        Flex.Notifications.showNotification(
+          ChatTransferNotification.ErrorTransferringChat,
+          { message }
+        );
       }
 
       return { success, taskSid: transferTaskSid, message };
@@ -143,7 +165,10 @@ class ChatTransferService extends ApiService {
         error.message = 'Unable to reach host';
       }
       const { message } = error as any;
-      Flex.Notifications.showNotification(ChatTransferNotification.ErrorTransferringChat, { message });
+      Flex.Notifications.showNotification(
+        ChatTransferNotification.ErrorTransferringChat,
+        { message }
+      );
       return { success: false, taskSid: '', message: undefined };
     }
   }
@@ -165,25 +190,32 @@ class ChatTransferService extends ApiService {
 
       // Perform associated chat orchestration task for task
       Flex.ChatOrchestrator.orchestrateCompleteTask(task);
-      const { success } = await this.getCompleteTransferredTask(taskSid, transferType, channelSid);
+      const { success } = await this.getCompleteTransferredTask(
+        taskSid,
+        transferType,
+        channelSid
+      );
       return success;
     } catch (error) {
       return false;
     }
   }
 
-   createTransferTask = async (
+  createTransferTask = async (
     task: Flex.ITask,
     transferTargetSid: string,
-    queueName: string,
+    queueName: string
   ): Promise<CreateTransferTaskResponse> => {
     const { attributes } = task;
     const manager = Flex.Manager.getInstance();
-    const { contact_uri } = manager.workerClient?.attributes as Flex.WorkerAttributes;
+    const { contact_uri } = manager.workerClient
+      ?.attributes as Flex.WorkerAttributes;
 
     const encodedParams: EncodedParams = {
       Token: encodeURIComponent(manager.user.token),
-      conversationId: encodeURIComponent(attributes.conversations?.conversation_id || task.taskSid),
+      conversationId: encodeURIComponent(
+        attributes.conversations?.conversation_id || task.taskSid
+      ),
       jsonAttributes: encodeURIComponent(JSON.stringify(attributes)),
       transferTargetSid: encodeURIComponent(transferTargetSid),
       transferQueueName: encodeURIComponent(queueName),
@@ -191,21 +223,22 @@ class ChatTransferService extends ApiService {
     };
 
     const response = await this.fetchJsonWithReject<CreateTransferTaskResponse>(
-       `${this.serverlessProtocol}://${this.serverlessDomain}/chat-transfer/flex/create-transfer-task`,
-       {
-         method: 'post',
-         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-         body: this.buildBody(encodedParams),
-       });
-     return {
-       ...response,
-     };
+      `${this.serverlessDomain}/chat-transfer/flex/create-transfer-task`,
+      {
+        method: 'post',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: this.buildBody(encodedParams),
+      }
+    );
+    return {
+      ...response,
+    };
   };
 
   getCompleteTransferredTask = async (
     taskSid: string,
     transferType: string,
-    channelSid: string,
+    channelSid: string
   ): Promise<CompleteTransferredTaskResponse> => {
     const manager = Flex.Manager.getInstance();
 
@@ -216,13 +249,15 @@ class ChatTransferService extends ApiService {
       channelSid: channelSid ? encodeURIComponent(channelSid) : undefined,
     };
 
-    const response = await this.fetchJsonWithReject<CompleteTransferredTaskResponse>(
-      `${this.serverlessProtocol}://${this.serverlessDomain}/chat-transfer/flex/complete-task-for-transfer`,
-      {
-        method: 'post',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: this.buildBody(encodedParams),
-      });
+    const response =
+      await this.fetchJsonWithReject<CompleteTransferredTaskResponse>(
+        `${this.serverlessDomain}/chat-transfer/flex/complete-task-for-transfer`,
+        {
+          method: 'post',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: this.buildBody(encodedParams),
+        }
+      );
     return {
       ...response,
     };
