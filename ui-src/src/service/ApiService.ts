@@ -1,7 +1,11 @@
-import * as Flex from "@twilio/flex-ui";
-import { EncodedParams } from "../types/serverless";
-import { ErrorManager, FlexErrorSeverity, FlexPluginErrorType } from "../utils/ErrorManager";
-import { random } from "lodash";
+import * as Flex from '@twilio/flex-ui';
+import { EncodedParams } from '../types/serverless';
+import {
+  ErrorManager,
+  FlexErrorSeverity,
+  FlexPluginErrorType,
+} from '../utils/ErrorManager';
+import { random } from 'lodash';
 
 function delay<T>(ms: number, result?: T) {
   return new Promise((resolve) => setTimeout(() => resolve(result), ms));
@@ -10,27 +14,31 @@ function delay<T>(ms: number, result?: T) {
 export default abstract class ApiService {
   protected manager = Flex.Manager.getInstance();
   serverlessDomain: string;
-  readonly serverlessProtocol: string;
 
   constructor() {
-    this.serverlessProtocol = "https";
-    this.serverlessDomain = "";
-    try{
-      if (process.env?.FLEX_APP_SERVERLESS_FUNCTONS_DOMAIN)
-      this.serverlessDomain = process.env?.FLEX_APP_SERVERLESS_FUNCTONS_DOMAIN;
-    if (!this.serverlessDomain)
-      console.error(
-        "serverless_functions_domain is not set in flex config or env file"
-      );
+    this.serverlessDomain = '';
+
+    try {
+      this.serverlessDomain =
+        process.env.FLEX_APP_SERVERLESS_FUNCTONS_DOMAIN ||
+        '<FLEX_APP_SERVERLESS_FUNCTONS_DOMAIN>';
+
+      if (!this.serverlessDomain)
+        throw Error('FLEX_APP_SERVERLESS_FUNCTONS_DOMAIN is not set');
     } catch (e) {
-      ErrorManager.createAndProcessError("Could not set serverless function domain", {
-        type: FlexPluginErrorType.serverless,
-        description: e instanceof Error ? `${e.message}` : "Could not set serverless function domain",
-        context: "Plugin.ApiService",
-        wrappedError: e
-    });
+      ErrorManager.createAndProcessError(
+        'Could not set serverless function domain',
+        {
+          type: FlexPluginErrorType.serverless,
+          description:
+            e instanceof Error
+              ? `${e.message}`
+              : 'Could not set serverless function domain',
+          context: 'Plugin.ApiService',
+          wrappedError: e,
+        }
+      );
     }
-    
   }
 
   protected buildBody(encodedParams: EncodedParams): string {
@@ -42,7 +50,7 @@ export default abstract class ApiService {
         return `${result}&${paramName}=${encodedParams[paramName]}`;
       }
       return `${paramName}=${encodedParams[paramName]}`;
-    }, "");
+    }, '');
   }
 
   protected fetchJsonWithReject<T>(
@@ -52,7 +60,7 @@ export default abstract class ApiService {
   ): Promise<T> {
     return fetch(url, config)
       .then((response) => {
-        console.log('resp', response.ok)
+        console.log('resp', response.ok);
         if (!response.ok) {
           throw response;
         }
