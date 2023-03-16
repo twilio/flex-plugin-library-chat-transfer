@@ -1,6 +1,6 @@
-import ApiService from "./ApiService";
-import { EncodedParams } from "../types/serverless";
-import { TaskAssignmentStatus } from "../types/task-router/Task";
+import ApiService from './ApiService';
+import { EncodedParams } from '../types/serverless';
+import { TaskAssignmentStatus } from '../types/task-router/Task';
 
 export interface Queue {
   targetWorkers: string;
@@ -78,8 +78,10 @@ class TaskRouterService extends ApiService {
     if (response.success) queues = response.queues;
     return queues;
   }
-  
-  async getWorkerChannels(workerSid: string): Promise<Array<WorkerChannelCapacityResponse>> {
+
+  async getWorkerChannels(
+    workerSid: string
+  ): Promise<Array<WorkerChannelCapacityResponse>> {
     const response = await this.#getWorkerChannels(workerSid);
     if (response.success) return response.workerChannels;
     return [];
@@ -112,10 +114,10 @@ class TaskRouterService extends ApiService {
     };
 
     return this.fetchJsonWithReject<UpdateTaskAttributesResponse>(
-      `${this.serverlessProtocol}://${this.serverlessDomain}/common/flex/taskrouter/update-task-assignment-status`,
+      `${this.serverlessDomain}/common/flex/taskrouter/update-task-assignment-status`,
       {
-        method: "post",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        method: 'post',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: this.buildBody(encodedParams),
       }
     ).then((response): UpdateTaskAttributesResponse => {
@@ -136,10 +138,10 @@ class TaskRouterService extends ApiService {
     };
 
     return this.fetchJsonWithReject<UpdateTaskAttributesResponse>(
-      `${this.serverlessProtocol}://${this.serverlessDomain}/common/flex/taskrouter/update-task-attributes`,
+      `${this.serverlessDomain}/common/flex/taskrouter/update-task-attributes`,
       {
-        method: "post",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        method: 'post',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: this.buildBody(encodedParams),
       }
     ).then((response): UpdateTaskAttributesResponse => {
@@ -155,28 +157,30 @@ class TaskRouterService extends ApiService {
     };
 
     return this.fetchJsonWithReject<GetQueuesResponse>(
-      `${this.serverlessProtocol}://${this.serverlessDomain}/common/flex/taskrouter/get-queues`,
+      `${this.serverlessDomain}/common/flex/taskrouter/get-queues`,
       {
-        method: "post",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        method: 'post',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: this.buildBody(encodedParams),
       }
     ).then((response): GetQueuesResponse => {
       return response;
     });
   };
-  
-  #getWorkerChannels = (workerSid: string): Promise<GetWorkerChannelsResponse> => {
+
+  #getWorkerChannels = (
+    workerSid: string
+  ): Promise<GetWorkerChannelsResponse> => {
     const encodedParams: EncodedParams = {
       workerSid: encodeURIComponent(workerSid),
       Token: encodeURIComponent(this.manager.user.token),
     };
-  
+
     return this.fetchJsonWithReject<GetWorkerChannelsResponse>(
-      `${this.serverlessProtocol}://${this.serverlessDomain}/common/flex/taskrouter/get-worker-channels`,
+      `${this.serverlessDomain}/common/flex/taskrouter/get-worker-channels`,
       {
-        method: "post",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        method: 'post',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: this.buildBody(encodedParams),
       }
     ).then((response): GetWorkerChannelsResponse => {
@@ -199,10 +203,10 @@ class TaskRouterService extends ApiService {
     };
 
     return this.fetchJsonWithReject<UpdateWorkerChannelResponse>(
-      `${this.serverlessProtocol}://${this.serverlessDomain}/common/flex/taskrouter/update-worker-channel`,
+      `${this.serverlessDomain}/common/flex/taskrouter/update-worker-channel`,
       {
-        method: "post",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        method: 'post',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: this.buildBody(encodedParams),
       }
     ).then((response): UpdateWorkerChannelResponse => {
