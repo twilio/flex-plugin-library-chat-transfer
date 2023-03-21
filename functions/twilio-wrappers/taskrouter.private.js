@@ -32,7 +32,9 @@ exports.updateTaskAttributes = async function updateTaskAttributes(parameters) {
   try {
     const axios = require("axios");
 
-    const taskContextURL = `https://taskrouter.twilio.com/v1/Workspaces/${process.env.TWILIO_FLEX_WORKSPACE_SID}/Tasks/${taskSid}`;
+    const region = context.TWILIO_REGION ? context.TWILIO_REGION.split('-')[0] : ''
+    const hostName = region ? `https://taskrouter.${region}.twilio.com` : "https://taskrouter.twilio.com";
+    const taskContextURL = `${hostName}/v1/Workspaces/${process.env.TWILIO_FLEX_WORKSPACE_SID}/Tasks/${taskSid}`;
     let config = {
       auth: {
         username: process.env.ACCOUNT_SID,
