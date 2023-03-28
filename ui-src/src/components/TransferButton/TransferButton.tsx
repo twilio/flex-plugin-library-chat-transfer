@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import {  IconButton, Actions,ITask, styled, withTaskContext } from "@twilio/flex-ui"
+import { IconButton, Actions, ITask } from "@twilio/flex-ui"
 
-// const IconContainer = styled.div`
-//   margin: auto;
-//   padding-right: 0.8em;
-// `
+const classes = {
+    IconContainer: {
+        margin: 'auto',
+        paddingRight: '0.8em'
+    }
+}
 
 interface TransferButtonProps {
     task: ITask
 }
 
-export const TransferButton = ({ task } : TransferButtonProps) => {
-     // All we are doing here is making sure we disable the transfer button after it is clicked
+export const TransferButton = ({ task }: TransferButtonProps) => {
+    // All we are doing here is making sure we disable the transfer button after it is clicked
     // There is additional complexity as we only want to disable it for the task they click transfer on
     const [disableTransferButtonForTask, setDisableTransferButtonForTask] = useState(false);
     const [taskSidsTransfered, setTaskSidsTransfered] = useState<string[]>([]);
-    
+
     // if there is a transfer task event for this chat disable the transfer button
     const handleTransferInitiated = (payload: any) => {
         setTaskSidsTransfered([...taskSidsTransfered, task.sid])
@@ -38,7 +40,7 @@ export const TransferButton = ({ task } : TransferButtonProps) => {
     }
 
     return (
-        //<IconContainer>
+        <div style={classes.IconContainer}>
             <IconButton
                 icon="TransferLarge"
                 key="worker-directory-open"
@@ -46,7 +48,7 @@ export const TransferButton = ({ task } : TransferButtonProps) => {
                 onClick={onShowDirectory}
                 variant="secondary"
                 title="Transfer Chat" />
-       //</IconContainer>
+        </div>
     )
 }
 
