@@ -5,19 +5,27 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     <div>
+      <div
+        style="margin: auto; padding-right: 0.8em;"
+      >
+        <button
+          icon="TransferLarge"
+          title="Transfer Chat"
+          variant="secondary"
+        />
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      style="margin: auto; padding-right: 0.8em;"
+    >
       <button
         icon="TransferLarge"
         title="Transfer Chat"
         variant="secondary"
       />
     </div>
-  </body>,
-  "container": <div>
-    <button
-      icon="TransferLarge"
-      title="Transfer Chat"
-      variant="secondary"
-    />
   </div>,
   "debug": [Function],
   "findAllByAltText": [Function],
