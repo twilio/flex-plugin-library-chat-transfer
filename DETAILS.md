@@ -1,9 +1,17 @@
 ## Details
 
-When enabled, the feature renders a "transfer" button at the top of the TaskCanvas.
+## How it works
+Plugin is ready to use once it is installed and the browser window is refreshed.
+- A transfer button is added to the task canvas.
+- Clicking this button pops an agent and queue directory.
+- Against every agent or queue in the directory there are transfer and consult buttons.
+- Agent can click Transfer to initiate a cold transfer and wrap up.
+- Or the agent can choose Consult to start a 3 way chat with another agent (warm transfer).
+- Chat history is visible to the transferred agent.
 
-When this button is selected, it invokes the ShowDirectory action
+## Installation
+During installation, 2 fields are required:
 
-When we select a worker or a queue, it invokes the TransferTask action which is replaced with some custom logic that recognizes if the task is a chat task and performs our custom behaviors, otherwise, it does what it does OOTB.
+ 1. *TaskRouter Workspace SID*: This is the SID of the "Flex Task Assignment" workspace that you see in [Twilio Console > TaskRouter > Workspaces](https://console.stage.twilio.com/us1/develop/taskrouter/workspaces).
 
-The custom behaviors then handle the orchestration of creating a new task, posting notification messages (normal messages with message attributes that allow the message to be rendered as a notification instead of a conversational message). They also handle the management of the chatOrchestrator and the channel janitor.
+ 2. *TaskRouter Chat Transfer Workflow SID*: You may want to create a new TaskRouter workflow for chat transfer or use the default workflow in [Twilio Console > TaskRouter > Workspaces > Flex Task Assignment](https://console.stage.twilio.com/us1/develop/taskrouter/workspaces) > Workflows > Assign to Anyone and get its SID

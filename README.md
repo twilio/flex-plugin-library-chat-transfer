@@ -1,33 +1,24 @@
 # chat-transfer
 
-This feature enables chat users to perform cold transfers to individual agents or queues. It also introduces notifications into the chat channel for users joining or leaving chat, or starting a cold transfer.
+This feature enables chat users to perform cold and warm transfers to individual agents or queues. It also introduces notifications into the chat channel for users joining or leaving chat, or starting a cold/warm transfer.
 
 If using the notification feature it is advised that you copy the custom components over to the customer facing chat react app to be re-used, so the custom messages with message-attributes indicating a notification can be rendered the same as they will be in flex.
 
 # setup and dependencies
 
-To use this feature first some setup needs to take place.
+During installation, 2 fields are required:
 
-this feature creates a task when transferring which copies the attributes of the existing task and places them into the new task to be transferred. When we transfer we only know the target, a worker sid or a queue sid.
+ 1. *TaskRouter Workspace SID*: This is the SID of the "Flex Task Assignment" workspace that you see in [Twilio Console > TaskRouter > Workspaces](https://console.twilio.com/us1/develop/taskrouter/workspaces)
 
-When creating a task we need to pass it to a taskrouter-workflow and the workflow needs to route it. In the case of a worker sid, this is a single rule as we can use the "known agent routing" option and pass in the variable. In the case of a queue, this is a little more cumbersome as we need to create a rule in the workflow for each queue.
+ 2. *TaskRouter Chat Transfer Workflow SID*: You may want to create a new TaskRouter workflow for chat transfer or use the default workflow in [Twilio Console > TaskRouter > Workspaces > Flex Task Assignment](https://console.twilio.com/us1/develop/taskrouter/workspaces) > Workflows > Assign to Anyone and get its SID.
 
-So we need to setup a workflow, similar to this one [here](example-taskrouter-workflow.json) where the first rule matches any worker selected then we have a rule for each queue in the system.
-
-With the workflow setup, we need to update the serverless function environment variable
-
-> TWILIO_FLEX_CHAT_TRANSFER_WORKFLOW_SID
-
-with the new workflow sid for the chat transfer.
-
-# how does it work?
-
-When enabled, the feature renders a "transfer" button at the top of the TaskCanvas.
-
-When this button is selected, it invokes the [ShowDirectory](https://assets.flex.twilio.com/docs/releases/flex-ui/1.31.2/Actions.html#.ShowDirectory) action
-
-When we select a worker or a queue, it invokes the [TransferTask](https://assets.flex.twilio.com/docs/releases/flex-ui/1.31.2/Actions.html#.TransferTask) action which is replaced with some custom logic that recognizes if the task is a chat task and performs our custom behaviors, otherwise, it does what it does OOTB.
-
-The custom behaviors then handle the orchestration of creating a new task, posting notification messages (normal messages with message attributes that allow the message to be rendered as a notification instead of a conversational message). They also handle the management of the chatOrchestrator and the channel janitor.
+## How it works
+Plugin is ready to use once it is installed and the browser window is refreshed.
+- A transfer button is added to the task canvas.
+- Clicking this button pops an agent and queue directory.
+- Against every agent or queue in the directory there are transfer and consult buttons.
+- Agent can click Transfer to initiate a cold transfer and wrap up.
+- Or the agent can choose Consult to start a 3 way chat with another agent (warm transfer).
+- Chat history is visible to the transferred agent.
 
 
