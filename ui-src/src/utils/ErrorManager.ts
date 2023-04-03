@@ -33,7 +33,7 @@ export class FlexPluginError extends Error {
         super(message);
         this.content = {
             ...content,
-            type: content.type || "ChatTransferCold",
+            type: content.type || "ChatTransfer",
             severity: content.severity || FlexErrorSeverity.normal,
         };
         this.time = new Date();
@@ -45,7 +45,7 @@ class ErrorManagerImpl {
 
     public processError(error: FlexPluginError, showNotification: boolean): FlexPluginError {
         try {
-            console.log(`Chat Transfer Cold Plugin: ${error}\nType: ${error.content.type}\nContext:${error.content.context}`);
+            console.log(`Chat Transfer Plugin: ${error}\nType: ${error.content.type}\nContext:${error.content.context}`);
             if (showNotification) {
                 Flex.Notifications.showNotification(
                     ChatTransferNotification.ErrorTransferringChat,
