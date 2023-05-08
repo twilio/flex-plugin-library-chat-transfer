@@ -1,6 +1,7 @@
 {
   "name": "flex-plugin-library-chat-transfer",
   "version": "1.0.0",
+  "id": "plibo-chat-transfer",
   "private": true,
   "scripts": {
     "test:watch": "jest --watch",
