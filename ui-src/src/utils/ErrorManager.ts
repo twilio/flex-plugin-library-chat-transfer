@@ -1,5 +1,8 @@
 import * as Flex from "@twilio/flex-ui";
+import packageJSON from '../../package.json';
 import { ChatTransferNotification } from "../flex-hooks/notifications/ChatTransfer";
+
+const flexManager = window?.Twilio?.Flex?.Manager?.getInstance();
 
 export enum FlexPluginErrorType {
     action = "ActionFramework",
@@ -46,6 +49,14 @@ class ErrorManagerImpl {
     public processError(error: FlexPluginError, showNotification: boolean): FlexPluginError {
         try {
             console.log(`Chat Transfer Plugin: ${error}\nType: ${error.content.type}\nContext:${error.content.context}`);
+            const pluginError = new Flex.FlexError(error.message, {
+                plugin: { name: packageJSON.name, version: packageJSON.version },
+                description: error.content.description,
+              });
+              if (flexManager?.reportErrorEvent) {
+                flexManager.reportErrorEvent(pluginError);
+              }
+              
             if (showNotification) {
                 Flex.Notifications.showNotification(
                     ChatTransferNotification.ErrorTransferringChat,
