@@ -10,7 +10,7 @@ describe("Analytics", () => {
     accountSid: "",
     flexUiVersion: "2.1.1",
     originalPluginName: "plibo-chat-transfer",
-    plugin: "flex-plugin-library-chat-transfer",
+    plugin: "plibo-chat-transfer",
     pluginVersion: "1.0.0",
     product: "Flex",
     workerSid: "",
