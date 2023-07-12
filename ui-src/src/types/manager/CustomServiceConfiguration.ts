@@ -1,6 +1,6 @@
 // add-feature-script: type imports
 
-import ChatTransferConfig from "../../types/ServiceConfiguration";
+import ChatTransferConfig from '../../types/ServiceConfiguration';
 
 export default interface FeatureServiceConfiguration {
   chat_transfer: ChatTransferConfig;

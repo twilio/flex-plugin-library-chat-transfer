@@ -46,26 +46,14 @@ interface UpdateWorkerChannelResponse {
 let queues = null as null | Array<Queue>;
 
 class TaskRouterService extends ApiService {
-  async updateTaskAttributes(
-    taskSid: string,
-    attributesUpdate: object
-  ): Promise<Boolean> {
-    const result = await this.updateTaskAttributesFn(
-      taskSid,
-      JSON.stringify(attributesUpdate)
-    );
+  async updateTaskAttributes(taskSid: string, attributesUpdate: object): Promise<boolean> {
+    const result = await this.updateTaskAttributesFn(taskSid, JSON.stringify(attributesUpdate));
 
     return result.success;
   }
 
-  async updateTaskAssignmentStatus(
-    taskSid: string,
-    assignmentStatus: TaskAssignmentStatus
-  ): Promise<Boolean> {
-    const result = await this.updateTaskAssignmentStatusFn(
-      taskSid,
-      assignmentStatus
-    );
+  async updateTaskAssignmentStatus(taskSid: string, assignmentStatus: TaskAssignmentStatus): Promise<boolean> {
+    const result = await this.updateTaskAssignmentStatusFn(taskSid, assignmentStatus);
     return result.success;
   }
 
@@ -79,9 +67,7 @@ class TaskRouterService extends ApiService {
     return queues;
   }
 
-  async getWorkerChannels(
-    workerSid: string
-  ): Promise<Array<WorkerChannelCapacityResponse>> {
+  async getWorkerChannels(workerSid: string): Promise<Array<WorkerChannelCapacityResponse>> {
     const response = await this.getWorkerChannelsFn(workerSid);
     if (response.success) return response.workerChannels;
     return [];
@@ -91,21 +77,16 @@ class TaskRouterService extends ApiService {
     workerSid: string,
     workerChannelSid: string,
     capacity: number,
-    available: boolean
-  ): Promise<Boolean> {
-    const result = await this.updateWorkerChannelFn(
-      workerSid,
-      workerChannelSid,
-      capacity,
-      available
-    );
+    available: boolean,
+  ): Promise<boolean> {
+    const result = await this.updateWorkerChannelFn(workerSid, workerChannelSid, capacity, available);
 
     return result.success;
   }
 
   updateTaskAssignmentStatusFn = (
     taskSid: string,
-    assignmentStatus: TaskAssignmentStatus
+    assignmentStatus: TaskAssignmentStatus,
   ): Promise<UpdateTaskAttributesResponse> => {
     const encodedParams: EncodedParams = {
       Token: encodeURIComponent(this.manager.user.token),
@@ -119,7 +100,7 @@ class TaskRouterService extends ApiService {
         method: 'post',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: this.buildBody(encodedParams),
-      }
+      },
     ).then((response): UpdateTaskAttributesResponse => {
       return {
         ...response,
@@ -127,10 +108,7 @@ class TaskRouterService extends ApiService {
     });
   };
 
-  updateTaskAttributesFn = (
-    taskSid: string,
-    attributesUpdate: string
-  ): Promise<UpdateTaskAttributesResponse> => {
+  updateTaskAttributesFn = (taskSid: string, attributesUpdate: string): Promise<UpdateTaskAttributesResponse> => {
     const encodedParams: EncodedParams = {
       Token: encodeURIComponent(this.manager.user.token),
       taskSid: encodeURIComponent(taskSid),
@@ -143,7 +121,7 @@ class TaskRouterService extends ApiService {
         method: 'post',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: this.buildBody(encodedParams),
-      }
+      },
     ).then((response): UpdateTaskAttributesResponse => {
       return {
         ...response,
@@ -156,21 +134,16 @@ class TaskRouterService extends ApiService {
       Token: encodeURIComponent(this.manager.user.token),
     };
 
-    return this.fetchJsonWithReject<GetQueuesResponse>(
-      `${this.serverlessDomain}/common/flex/taskrouter/get-queues`,
-      {
-        method: 'post',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: this.buildBody(encodedParams),
-      }
-    ).then((response): GetQueuesResponse => {
+    return this.fetchJsonWithReject<GetQueuesResponse>(`${this.serverlessDomain}/common/flex/taskrouter/get-queues`, {
+      method: 'post',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: this.buildBody(encodedParams),
+    }).then((response): GetQueuesResponse => {
       return response;
     });
   };
 
-  getWorkerChannelsFn = (
-    workerSid: string
-  ): Promise<GetWorkerChannelsResponse> => {
+  getWorkerChannelsFn = (workerSid: string): Promise<GetWorkerChannelsResponse> => {
     const encodedParams: EncodedParams = {
       workerSid: encodeURIComponent(workerSid),
       Token: encodeURIComponent(this.manager.user.token),
@@ -182,7 +155,7 @@ class TaskRouterService extends ApiService {
         method: 'post',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: this.buildBody(encodedParams),
-      }
+      },
     ).then((response): GetWorkerChannelsResponse => {
       return response;
     });
@@ -192,7 +165,7 @@ class TaskRouterService extends ApiService {
     workerSid: string,
     workerChannelSid: string,
     capacity: number,
-    available: boolean
+    available: boolean,
   ): Promise<UpdateWorkerChannelResponse> => {
     const encodedParams: EncodedParams = {
       Token: encodeURIComponent(this.manager.user.token),
@@ -208,7 +181,7 @@ class TaskRouterService extends ApiService {
         method: 'post',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: this.buildBody(encodedParams),
-      }
+      },
     ).then((response): UpdateWorkerChannelResponse => {
       return response;
     });

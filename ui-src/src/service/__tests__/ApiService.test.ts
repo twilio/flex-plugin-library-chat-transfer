@@ -1,4 +1,3 @@
-
 import ApiService from '../ApiService';
 import * as Flex from '@twilio/flex-ui';
 import { EncodedParams } from '../../types/Params';

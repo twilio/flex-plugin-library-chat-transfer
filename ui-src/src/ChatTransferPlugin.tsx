@@ -5,7 +5,7 @@ import { FlexPlugin } from '@twilio/flex-plugin';
 import CustomizePasteElements from './utils/PasteThemeProvider';
 import { interceptTransferOverrideForChatTasks } from './flex-hooks/actions/TransferTask';
 import ChatTransferNotifications from './flex-hooks/notifications/ChatTransfer';
-import ChatTransferStrings from './flex-hooks/strings/ChatTransfer'
+import ChatTransferStrings from './flex-hooks/strings/ChatTransfer';
 
 import ChatNotificationMessage from './components/ChatNotificationMessage';
 import { interceptTransferredChatTasks } from './flex-hooks/actions/CompleteTask';

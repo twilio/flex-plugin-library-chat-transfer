@@ -1,10 +1,10 @@
-import { VERSION } from "@twilio/flex-ui";
-import packageJSON from "../../package.json";
+import { VERSION } from '@twilio/flex-ui';
+import packageJSON from '../../package.json';
 
 const flexManager = window?.Twilio?.Flex?.Manager?.getInstance();
 
 export enum Event {
-  CHAT_TRANSFERRED = "Chat Transferred",
+  CHAT_TRANSFERRED = 'Chat Transferred',
 }
 
 type CommonPropertiesType = {
@@ -25,33 +25,28 @@ type PagePropertiesType = {
   url: string;
 };
 
-type Parameters = [
-  string,
-  Record<string, any>,
-  Record<string, any>,
-  (() => void) | undefined
-];
+type Parameters = [string, Record<string, any>, Record<string, any>, (() => void) | undefined];
 
 export enum Method {
-  PAGE = "page",
-  TRACK = "track",
-  IDENTIFY = "identify",
-  GROUP = "group",
+  PAGE = 'page',
+  TRACK = 'track',
+  IDENTIFY = 'identify',
+  GROUP = 'group',
 }
 
 class Analytics {
   private static readonly commonProperties: CommonPropertiesType = {
-    product: "Flex",
+    product: 'Flex',
     flexUiVersion: VERSION,
-    workerSid: flexManager?.workerClient?.sid || "",
-    accountSid: flexManager?.serviceConfiguration.account_sid || "",
+    workerSid: flexManager?.workerClient?.sid || '',
+    accountSid: flexManager?.serviceConfiguration.account_sid || '',
     plugin: packageJSON.name,
     pluginVersion: packageJSON.version,
     originalPluginName: packageJSON.id,
   };
 
   private static get segment(): HTMLIFrameElement {
-    return document.querySelector("#segment-analytics") as HTMLIFrameElement;
+    return document.querySelector('#segment-analytics') as HTMLIFrameElement;
   }
 
   private static get _pageProperties(): PagePropertiesType {
@@ -64,11 +59,7 @@ class Analytics {
     };
   }
 
-  public static page(
-    name: string,
-    properties?: Record<string, any>,
-    callback?: () => void
-  ): void {
+  public static page(name: string, properties?: Record<string, any>, callback?: () => void): void {
     this._post(
       Method.PAGE,
       name,
@@ -82,15 +73,11 @@ class Analytics {
           groupId: this.commonProperties.accountSid,
         },
       },
-      callback
+      callback,
     );
   }
 
-  public static track(
-    event: string,
-    properties: Record<string, any>,
-    callback?: () => void
-  ): void {
+  public static track(event: string, properties: Record<string, any>, callback?: () => void): void {
     this._post(
       Method.TRACK,
       event,
@@ -106,14 +93,11 @@ class Analytics {
           },
         },
       },
-      callback
+      callback,
     );
   }
 
-  public static identify(
-    traits: Record<string, any> = {},
-    callback?: () => void
-  ): void {
+  public static identify(traits: Record<string, any> = {}, callback?: () => void): void {
     this._post(
       Method.IDENTIFY,
       this.commonProperties.workerSid,
@@ -129,15 +113,11 @@ class Analytics {
           },
         },
       },
-      callback
+      callback,
     );
   }
 
-  public static group(
-    groupId: string,
-    traits: Record<string, any> = {},
-    callback?: () => void
-  ): void {
+  public static group(groupId: string, traits: Record<string, any> = {}, callback?: () => void): void {
     this._post(
       Method.GROUP,
       groupId,
@@ -152,7 +132,7 @@ class Analytics {
           },
         },
       },
-      callback
+      callback,
     );
   }
 
@@ -160,11 +140,11 @@ class Analytics {
     if (this.segment && this.segment.contentWindow) {
       this.segment.contentWindow.postMessage(
         {
-          type: "analytics",
+          type: 'analytics',
           method,
           params,
         },
-        window.parent.origin
+        window.parent.origin,
       );
     }
   }

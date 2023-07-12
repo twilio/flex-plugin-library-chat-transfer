@@ -8,7 +8,7 @@ export default interface Reservation extends EventEmitter {
   dateCreated: Date;
   dateUpdated: Date;
   sid: string;
-  status: 'pending'|'accepted'|'rejected'|'timeout'|'canceled'|'rescinded'|'wrapping'|'completed';
+  status: 'pending' | 'accepted' | 'rejected' | 'timeout' | 'canceled' | 'rescinded' | 'wrapping' | 'completed';
   task: Task;
   task_transfer: undefined;
   timeout: number;

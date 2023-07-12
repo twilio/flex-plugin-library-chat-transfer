@@ -1,4 +1,4 @@
-import { FlexEvent } from "../../types/manager/FlexEvent";
+import { FlexEvent } from '../../types/manager/FlexEvent';
 //import { isFeatureEnabled } from "../../index";
 
 const pluginsLoadedHandler = (flexEvent: FlexEvent) => {
