@@ -1,6 +1,7 @@
 import * as Flex from '@twilio/flex-ui';
 import ChatTransferService from '../../service/ChatTransferService';
 import { ErrorManager, FlexErrorSeverity, FlexPluginErrorType } from "../../utils/ErrorManager";
+import Analytics, { Event } from '../../utils/Analytics';
 //import { isFeatureEnabled } from '../../index';
 
 export interface TransferOptions {
@@ -23,10 +24,14 @@ export function interceptTransferOverrideForChatTasks(flex: typeof Flex, manager
   //if (!isFeatureEnabled()) return;
   try{
     Flex.Actions.addListener('beforeTransferTask', async (payload: EventPayload, abortFunction: any) => {
+      const isWorkerSid = payload.targetSid.startsWith('WK');
       if (Flex.TaskHelper.isChatBasedTask(payload.task) && !Flex.TaskHelper.isCBMTask(payload.task)) {
         abortFunction(payload);
         // Execute Chat Transfer Task
         await ChatTransferService.executeChatTransfer(payload.task, payload.targetSid, payload.options);
+        Analytics.track(Event.CHAT_TRANSFERRED, {
+          [isWorkerSid ? "toAgentSid" : "toQueueSid"]: payload.targetSid,
+        });
       }
     });
   } catch (e) {

@@ -13,7 +13,7 @@ class ProgrammableChatService extends ApiService {
     attributes: any
   ): Promise<Boolean> {
     try {
-      const { success } = await this.#updateChannelAttributes(
+      const { success } = await this.updateChannelAttributesFn(
         channelSid,
         JSON.stringify(attributes)
       );
@@ -23,7 +23,7 @@ class ProgrammableChatService extends ApiService {
     }
   }
 
-  #updateChannelAttributes = (
+  updateChannelAttributesFn = (
     channelSid: string,
     attributes: any
   ): Promise<UpdateChannelAttributesResponse> => {

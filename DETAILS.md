@@ -1,6 +1,6 @@
 ## Details
 
-## How it works
+### How it works
 Plugin is ready to use once it is installed and the browser window is refreshed.
 - A transfer button is added to the task canvas.
 - Clicking this button pops an agent and queue directory.
@@ -9,7 +9,7 @@ Plugin is ready to use once it is installed and the browser window is refreshed.
 - Or the agent can choose Consult to start a 3 way chat with another agent (warm transfer).
 - Chat history is visible to the transferred agent.
 
-## Installation
+### Installation
 During installation, 2 fields are required:
 
  1. *TaskRouter Workspace SID*: This is the SID of the "Flex Task Assignment" workspace that you see in [Twilio Console > TaskRouter > Workspaces](https://console.stage.twilio.com/us1/develop/taskrouter/workspaces).Please refer screenshot below:
