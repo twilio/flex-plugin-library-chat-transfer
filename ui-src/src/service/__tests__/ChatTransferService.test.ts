@@ -14,30 +14,30 @@ describe('completeTransferredTask', () => {
     jest.spyOn(console, 'error').mockImplementation(() => {});
   });
   it('ends the conference successfully', async () => {
-    fetch.mockResponseOnce(JSON.stringify({ success:true }));
+    fetch.mockResponseOnce(JSON.stringify({ success: true }));
     const task = {
-        attributes:{
-            channelSid:"CHxxx",
-            chatTransferData:{
-                transferType:"COLD"
-            }
+      attributes: {
+        channelSid: 'CHxxx',
+        chatTransferData: {
+          transferType: 'COLD',
         },
-        taskSid:"TAxxx"
-    } as unknown as Flex.ITask
+      },
+      taskSid: 'TAxxx',
+    } as unknown as Flex.ITask;
     const response = await ChatTransferService.completeTransferredTask(task);
     expect(response).toBe(true);
   });
 
-//   it('throws error when trying to end conference', async () => {
-//     fetch.mockRejectOnce('Mock Error string');
-//     let err = null;
-//     try {
-//       await ConferenceService.setEndConferenceOnExit('CFxxxxxx', 'PSxxxxxx', true);
-//     } catch (error) {
-//       err = error;
-//     }
-//     expect(err).toEqual('Mock Error string');
-//   });
+  //   it('throws error when trying to end conference', async () => {
+  //     fetch.mockRejectOnce('Mock Error string');
+  //     let err = null;
+  //     try {
+  //       await ConferenceService.setEndConferenceOnExit('CFxxxxxx', 'PSxxxxxx', true);
+  //     } catch (error) {
+  //       err = error;
+  //     }
+  //     expect(err).toEqual('Mock Error string');
+  //   });
 });
 
 describe('execute chat transfer', () => {
@@ -51,17 +51,17 @@ describe('execute chat transfer', () => {
     jest.spyOn(console, 'error').mockImplementation(() => {});
   });
   const task = {
-    attributes:{
-        channelSid:"CHxxx",
-        chatTransferData:{
-            transferType:"COLD"
-        }
+    attributes: {
+      channelSid: 'CHxxx',
+      chatTransferData: {
+        transferType: 'COLD',
+      },
     },
-    taskSid:"TAxxx"
-} as unknown as Flex.ITask
-const options = {
-    mode:"COLD"
-} as unknown as TransferOptions
+    taskSid: 'TAxxx',
+  } as unknown as Flex.ITask;
+  const options = {
+    mode: 'COLD',
+  } as unknown as TransferOptions;
   // it('execute chat transfer successfully', async () => {
   //   ChatTransferService
   //   fetch.mockResponseOnce(JSON.stringify({ callSid: 'CSxxxxxx' }));
@@ -82,31 +82,31 @@ describe('createTransferTask', () => {
     jest.spyOn(console, 'error').mockImplementation(() => {});
   });
   const task = {
-    attributes:{
-        channelSid:"CHxxx",
-        chatTransferData:{
-            transferType:"COLD"
-        }
+    attributes: {
+      channelSid: 'CHxxx',
+      chatTransferData: {
+        transferType: 'COLD',
+      },
     },
-    taskSid:"TAxxx"
-} as unknown as Flex.ITask
+    taskSid: 'TAxxx',
+  } as unknown as Flex.ITask;
   it('createTransferTask called successfully', async () => {
-    const res = { callSid: 'CSxxxxxx' }
+    const res = { callSid: 'CSxxxxxx' };
     fetch.mockResponseOnce(JSON.stringify(res));
-    const response = await ChatTransferService.createTransferTask(task, 'WKxxx','WQxxx');
-    expect(response).toEqual(res)
+    const response = await ChatTransferService.createTransferTask(task, 'WKxxx', 'WQxxx');
+    expect(response).toEqual(res);
   });
 
-//   it('throws error when trying to add a participant to the conference', async () => {
-//     fetch.mockRejectOnce('Mock Error string');
-//     let err = null;
-//     try {
-//       await ConferenceService.holdParticipant('CFxxxxxx', 'PSxxxxxx');
-//     } catch (error) {
-//       err = error;
-//     }
-//     expect(err).toEqual('Mock Error string');
-//   });
+  //   it('throws error when trying to add a participant to the conference', async () => {
+  //     fetch.mockRejectOnce('Mock Error string');
+  //     let err = null;
+  //     try {
+  //       await ConferenceService.holdParticipant('CFxxxxxx', 'PSxxxxxx');
+  //     } catch (error) {
+  //       err = error;
+  //     }
+  //     expect(err).toEqual('Mock Error string');
+  //   });
 });
 
 // describe('unholdParticipant', () => {

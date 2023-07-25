@@ -8,25 +8,16 @@ export interface UpdateChannelAttributesResponse {
 }
 
 class ProgrammableChatService extends ApiService {
-  async updateChannelAttributes(
-    channelSid: string,
-    attributes: any
-  ): Promise<Boolean> {
+  async updateChannelAttributes(channelSid: string, attributes: any): Promise<boolean> {
     try {
-      const { success } = await this.updateChannelAttributesFn(
-        channelSid,
-        JSON.stringify(attributes)
-      );
+      const { success } = await this.updateChannelAttributesFn(channelSid, JSON.stringify(attributes));
       return success;
     } catch (error) {
       return false;
     }
   }
 
-  updateChannelAttributesFn = (
-    channelSid: string,
-    attributes: any
-  ): Promise<UpdateChannelAttributesResponse> => {
+  updateChannelAttributesFn = (channelSid: string, attributes: any): Promise<UpdateChannelAttributesResponse> => {
     const manager = Flex.Manager.getInstance();
 
     const encodedParams: EncodedParams = {
@@ -41,7 +32,7 @@ class ProgrammableChatService extends ApiService {
         method: 'post',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: this.buildBody(encodedParams),
-      }
+      },
     ).then((response): UpdateChannelAttributesResponse => {
       return {
         ...response,
