@@ -1,6 +1,6 @@
 ## Details
 
-# Note
+### Note
 This plugin is only compatible with 'Programmable Chat API' and not with 'Conversations API'.
 
 ### How it works
