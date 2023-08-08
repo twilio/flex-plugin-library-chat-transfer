@@ -1,0 +1,42 @@
+{
+  "name": "flex-plugin-library-conversation-transfer",
+  "version": "0.0.1",
+  "id": "flex-plugin-library-conversation-transfer",
+  "private": true,
+  "scripts": {
+    "prebuild": "rimraf build && npm run bootstrap",
+    "postinstall": "flex-plugin pre-script-check",
+    "prestart": "npm run bootstrap",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@twilio-paste/core": "^17.2.0",
+    "@twilio-paste/icons": "^9.4.2",
+    "@twilio/flex-dev-utils": "^5.1.3",
+    "@twilio/flex-plugin-scripts": "6.0.3",
+    "react": "17.0.2",
+    "react-dom": "17.0.2"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "7.20.2",
+    "@babel/preset-react": "7.18.6",
+    "@babel/preset-typescript": "^7.12.1",
+    "@testing-library/jest-dom": "5.16.5",
+    "@testing-library/react": "12.1.5",
+    "@twilio/flex-ui": "2.1.1",
+    "@types/jest": "^26.0.20",
+    "@types/react-redux": "^7.1.1",
+    "@emotion/styled": "11.10.5",
+    "twilio-cli": "5.2.1",
+    "twilio-run": "3.4.2",
+    "typescript": "^4.1.2",
+    "jest": "^26.0.20",
+    "jest-fetch-mock": "3.0.3",
+    "jest-junit": "12.0.0",
+    "react-test-renderer": "17.0.2",
+    "twilio": "3.84.1"
+  },
+  "jest-junit": {
+    "outputDirectory": "./test-results"
+  }
+}
