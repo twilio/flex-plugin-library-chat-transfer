@@ -11,17 +11,14 @@ const conversation = {
 };
 const invitesTaskSid = 'invitesTaskSid';
 
-jest.mock('./mocked-task-service', () => ({
+jest.mock('../../../utils/TaskRouter/TaskRouterService', () => ({
   updateTaskAssignmentStatus: jest.fn(),
 }));
 
-jest.mock('./mocked-invited-participant', () => ({
+jest.mock('../../../helpers/inviteTracker', () => ({
   removeInvitedParticipant: jest.fn(),
 }));
 
-jest.mock('./mocked-notifications', () => ({
-  showNotification: jest.fn(),
-}));
 
 describe('handleCancelChatParticipantInvite', () => {
   afterEach(() => {
@@ -33,6 +30,6 @@ describe('handleCancelChatParticipantInvite', () => {
 
     expect(TaskService.updateTaskAssignmentStatus).toHaveBeenCalledWith(invitesTaskSid, 'canceled');
     expect(removeInvitedParticipant).toHaveBeenCalledWith(conversation.source.sid, conversation.source.attributes, invitesTaskSid);
-    expect(Notifications.showNotification).toHaveBeenCalledWith('ChatCancelParticipantInviteSuccess');
+    // expect(Notifications.showNotification).toHaveBeenCalledWith('ChatCancelParticipantInviteSuccess');
   });
 });

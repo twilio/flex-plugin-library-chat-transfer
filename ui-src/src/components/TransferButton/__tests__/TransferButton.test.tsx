@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable prettier/prettier */
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 import TransferButton from '../TransferButton';

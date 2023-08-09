@@ -6,21 +6,11 @@ export const actionEvent = FlexActionEvent.before;
 export const actionName = FlexAction.ShowDirectory;
 export const actionHook = function handleConvTransferShowDirectory(flex: typeof Flex, manager: Flex.Manager) {
   flex.Actions.addListener(`${actionEvent}${actionName}`, (_payload: any, _abortFunction: any) => {
-    let display1 = 'flex';
-    let display2 = 'flex';
+    const display1 = 'flex';
+    const display2 = 'flex';
 
     const taskSid = manager.store.getState().flex.view.selectedTaskSid;
     if (!taskSid) return;
-
-    const isCbm = Flex.TaskHelper.isCBMTask(Flex.TaskHelper.getTaskByTaskSid(taskSid));
-
-    // Hide buttons for CBM tasks only
-    if (isCbm) {
-      // if cold xfer is disabled, remove button 2 unless flex warm xfer is disabled, then remove button 1 instead.
-      // if multi party is disabled, remove button 1 unless flex warm xfer is disabled
-      const isFlexWarmXferEnabled =
-        manager.store.getState().flex.featureFlags.features['flex-warm-transfers']?.enabled === true;
-    }
 
     manager.updateConfig({
       theme: {

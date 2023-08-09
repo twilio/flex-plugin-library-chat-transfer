@@ -23,7 +23,7 @@
     "@babel/preset-typescript": "^7.12.1",
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/react": "12.1.5",
-    "@twilio/flex-ui": "2.1.1",
+    "@twilio/flex-ui": "^2",
     "@types/jest": "^26.0.20",
     "@types/react-redux": "^7.1.1",
     "@emotion/styled": "11.10.5",

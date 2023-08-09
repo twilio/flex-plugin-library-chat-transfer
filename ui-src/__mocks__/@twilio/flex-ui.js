@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { EventEmitter } from 'events';
-import { getMockedServiceConfiguration } from '../../test-utils/flex-service-configuration';
-import { getMockedReduxState } from '../../test-utils/flex-redux';
+import { getMockedServiceConfiguration } from '../../test-utils/flex-service-configuration'
+// We need to mock anything our plugin uses from @twilio/flex-ui here
 
 class WorkerClient extends EventEmitter {
   constructor() {
@@ -20,11 +20,24 @@ class Manager {
 
   constructor() {
     this.events = new EventEmitter();
+    this.insightsClient = {
+      instantQuery: () => Promise.resolve({
+        once: jest.fn(),
+        search: jest.fn()
+      })
+    }
     this.workerClient = new WorkerClient();
+    this.conversationsClient = {
+      getConversationBySid:()=>Promise.resolve({
+        attributes:{
+          associatedTasks:{"TAxxx":""}
+        }
+      })
+    }
     this.store = {
       addReducer: jest.fn(),
       dispatch: jest.fn(),
-      getState: jest.fn(() => getMockedReduxState()),
+      getState: jest.fn(),
     };
     this.user = {
       token: 'mockedToken',
@@ -92,7 +105,7 @@ class Actions {
 class Notifications {
   registeredNotifications = new Map();
 
-  constructor() {}
+  constructor() { }
 
   registerNotification(notification) {
     this.registeredNotifications.set(notification.id, notification);
@@ -173,6 +186,15 @@ module.exports = {
     canHold: () => {
       return true;
     },
+    isChatBasedTask: () => {
+      return true;
+    },
+    isCBMTask: () => {
+      return false;
+    }
+  },
+  ChatOrchestrator: {
+    orchestrateCompleteTask: jest.fn()
   },
   StateHelper: {
     getTaskByTaskrouterTaskSid: (props) => jest.fn(),

@@ -9,12 +9,12 @@ export const actionName = FlexAction.TransferTask;
 export const actionHook = function handleConvTransfer(flex: typeof Flex) {
   // if (!isColdTransferEnabled() && !isMultiParticipantEnabled()) return;
 
-  flex.Actions.addListener(`${actionEvent}${actionName}`, (payload: TransferActionPayload, abortFunction: any) => {
-    if (flex.TaskHelper.isCBMTask(payload.task)) {
+  Flex.Actions.addListener(`${actionEvent}${actionName}`, (payload: TransferActionPayload, abortFunction: any) => {
+    if (Flex.TaskHelper.isCBMTask(payload.task)) {
       // native action handler would fail for chat task so abort the action
       abortFunction();
       // Execute Chat Transfer Task
-      flex.Actions.invokeAction('ChatTransferTask', payload);
+      Flex.Actions.invokeAction('ChatTransferTask', payload);
     }
   });
 };

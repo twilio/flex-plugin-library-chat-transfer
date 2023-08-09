@@ -1,15 +1,14 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-undef */
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react';
 import { addParticipantsTab } from '../TaskCanvasTabs';
 import '@testing-library/jest-dom';
-import { TaskCanvasHeader } from '@twilio/flex-ui';
+import { TaskCanvasTabs } from '@twilio/flex-ui';
 
 jest.mock('@twilio/flex-ui', () => {
     return {
       __esModule: true,
-      TaskCanvasHeader: {
+      TaskCanvasTabs: {
         Content: {
           add: jest.fn(),
         },
@@ -27,7 +26,7 @@ jest.mock('@twilio/flex-ui', () => {
   describe('add transfer button', () => {
     let flex;
     it('add conversation transfer button to taskcanvasheader', async () => {
-      const addContentSpy = jest.spyOn(TaskCanvasHeader.Content, 'add');
+      const addContentSpy = jest.spyOn(TaskCanvasTabs.Content, 'add');
       addParticipantsTab(flex);
       await expect(addContentSpy).toHaveBeenCalledTimes(1);
     });

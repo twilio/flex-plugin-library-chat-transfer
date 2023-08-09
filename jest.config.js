@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-undef
 module.exports = {
   rootDir: '.',
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
