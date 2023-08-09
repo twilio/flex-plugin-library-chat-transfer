@@ -1,7 +1,16 @@
 import { registerCancelChatParticipantInvite } from '../cancelChatParticipantInvite'; // Update the path to the actual file
 import TaskService from '../../../utils/TaskRouter/TaskRouterService';
 import { removeInvitedParticipant } from '../../../helpers/inviteTracker';
-import { Notifications } from '@twilio/flex-ui';
+import { Actions } from '@twilio/flex-ui';
+
+jest.mock('@twilio/flex-ui', () => {
+  return {
+    __esModule: true,
+    Actions: {
+      registerAction: jest.fn(),
+    },
+  };
+});
 
 const conversation = {
   source: {
@@ -26,7 +35,7 @@ describe('handleCancelChatParticipantInvite', () => {
   });
 
   it('cancels chat participant invite and shows success notification', async () => {
-    await registerCancelChatParticipantInvite();
+    registerCancelChatParticipantInvite();
 
     expect(TaskService.updateTaskAssignmentStatus).toHaveBeenCalledWith(invitesTaskSid, 'canceled');
     expect(removeInvitedParticipant).toHaveBeenCalledWith(conversation.source.sid, conversation.source.attributes, invitesTaskSid);

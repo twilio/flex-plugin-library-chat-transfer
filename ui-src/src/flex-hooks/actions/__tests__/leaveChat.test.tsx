@@ -43,7 +43,7 @@ describe('handleLeaveChatAction', () => {
     expect(Notifications.showNotification).not.toHaveBeenCalled();
   });
 
-  it.only('shows failure notification when removing participant fails', async () => {
+  it('shows failure notification when removing participant fails', async () => {
     require('../../../helpers/APIHelper').buildRemoveMyPartiticipantAPIPayload.mockResolvedValue(null);
     registerLeaveChatAction();
 

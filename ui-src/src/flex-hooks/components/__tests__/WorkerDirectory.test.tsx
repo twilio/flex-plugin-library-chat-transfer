@@ -1,7 +1,6 @@
 import * as Flex from '@twilio/flex-ui';
 import { removeDialpadForConvTransfer } from '../WorkerDirectory';
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { WorkerDirectory } from '@twilio/flex-ui';
 

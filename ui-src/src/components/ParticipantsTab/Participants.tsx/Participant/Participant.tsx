@@ -4,6 +4,8 @@ import { AgentIcon } from '@twilio-paste/icons/esm/AgentIcon';
 import { CloseIcon } from '@twilio-paste/icons/esm/CloseIcon';
 import { useState } from 'react';
 import { templates } from '@twilio/flex-ui';
+import React from 'react';
+
 
 import { ParticipantType } from '../../../../flex-hooks/types/ParticipantDetails';
 import { StringTemplates } from '../../../../flex-hooks/strings/ChatTransferStrings';
@@ -25,9 +27,9 @@ export const Participant = ({ participantType, name, allowKick, handleKickPartic
 
   const icon =
     participantType === 'agent' ? (
-      <AgentIcon decorative={false} title={templates[StringTemplates.Agent]()} />
+      <AgentIcon decorative={false} title="ConvTransferAgent" />
     ) : (
-      <UserIcon decorative={false} title={templates[StringTemplates.Customer]()} />
+      <UserIcon decorative={false} title="ConvTransferCustomer" />
     );
 
   const disableKickParticipant = !allowKick;

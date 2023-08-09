@@ -56,14 +56,19 @@ export const ParticipantsTab = ({ task, conversation }: ParticipantsTabProps) =>
 
   return (
     <ParticipantsTabContainer>
-      <Stack orientation="vertical" spacing="space40">
+      <Box as="div"
+        margin="auto"
+        paddingRight="space60"
+    >
+      {/* <Stack orientation="vertical" spacing="space40"> */}
         <Participants participantDetails={participantDetails} handleKickParticipant={handleKickParticipant} />
 
         <InvitedParticipants
           invitedParticipantDetails={invitedParticipantDetails}
           handleCancelInvite={handleCancelInvite}
         />
-      </Stack>
+      {/* </Stack> */}
+      </Box>
     </ParticipantsTabContainer>
   );
 };

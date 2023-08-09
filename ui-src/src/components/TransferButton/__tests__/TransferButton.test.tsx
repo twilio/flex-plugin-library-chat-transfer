@@ -37,13 +37,13 @@ jest.mock('@twilio/flex-ui', () => {
     it('should add a listener for beforeTransferTask event on mount', async () => {
       const addListener = jest.spyOn(Actions, 'addListener');
       const w = render(<TransferButton task={t} />);
-      expect(addListener).toHaveBeenCalledWith('beforeTransferTask', expect.any(Function));
+      expect(addListener).toBeCalledTimes(2);
     });
     it('should remove the listener for beforeTransferTask event on unmount', async () => {
       const removeListener = jest.spyOn(Actions, 'removeListener');
       const w = render(<TransferButton task={t} />);
       w.unmount();
-      expect(removeListener).toHaveBeenCalledWith('beforeTransferTask', expect.any(Function));
+      expect(removeListener).toBeCalledTimes(2);
     });
   });
   

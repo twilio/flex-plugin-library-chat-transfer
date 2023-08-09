@@ -1,13 +1,11 @@
+/* eslint-disable prettier/prettier */
+import React from 'react';
+
 import { useState, useEffect } from 'react';
-import { IconButton, ITask, Actions, styled, templates } from '@twilio/flex-ui';
-
+import { IconButton, ITask, Actions } from '@twilio/flex-ui';
+import { Box } from '@twilio-paste/core';
 import { TransferActionPayload } from '../../flex-hooks/types/ActionPayloads';
-import { StringTemplates } from '../../flex-hooks/strings/ChatTransferStrings';
 
-const IconContainer = styled.div`
-  margin: auto;
-  padding-right: 0.8em;
-`;
 interface TransferButtonProps {
   task: ITask;
 }
@@ -52,16 +50,19 @@ const TransferButton = ({ task }: TransferButtonProps) => {
   };
 
   return (
-    <IconContainer>
+    <Box as="div"
+        margin="auto"
+        paddingRight="space60"
+    >
       <IconButton
         icon="TransferLarge"
         key="worker-directory-open"
         disabled={disableTransferButtonForTask}
         onClick={onShowDirectory}
         variant="secondary"
-        title={templates[StringTemplates.TransferChat]()}
+        title="ConvTransferTransferChat"
       />
-    </IconContainer>
+    </Box>
   );
 };
 

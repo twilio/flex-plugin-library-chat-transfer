@@ -52,7 +52,7 @@ describe('registerRemoveChatParticipant', () => {
         // expect(Notifications.showNotification).toHaveBeenCalledWith(expect.any("ChatRemoveParticipantFailed"));
     });
     
-    it.only('should show error notification when API payload is not built', async () => {
+    it('should show error notification when API payload is not built', async () => {
         payload.task = null;
     
         registerRemoveChatParticipant();

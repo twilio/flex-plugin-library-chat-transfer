@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-undef
 module.exports = {
   rootDir: '.',
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
@@ -19,11 +18,10 @@ module.exports = {
     '/test-utils',
     '/types',
     '/strings',
+    'ui-src/build',
     '/utils',
-    '/build',
-    'assets',
-    './functions/setup.js',
-    '/redux',
+    '/assets',
+    '/functions/setup.js'
   ],
   coverageReporters: ['json', 'lcov', 'text', 'clover', 'cobertura'],
   testResultsProcessor: 'jest-junit',

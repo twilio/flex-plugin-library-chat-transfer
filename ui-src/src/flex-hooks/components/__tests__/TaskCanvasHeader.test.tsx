@@ -4,8 +4,8 @@ import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 import { addConvTransferButtons } from '../TaskCanvasHeader';
 import '@testing-library/jest-dom';
-import { TaskCanvasHeader } from '@twilio/flex-ui';
-
+import { TaskCanvasHeader, Manager } from '@twilio/flex-ui';
+import * as Flex from '@twilio/flex-ui'
 jest.mock('@twilio/flex-ui', () => {
     return {
       __esModule: true,
@@ -13,7 +13,12 @@ jest.mock('@twilio/flex-ui', () => {
         Content: {
           add: jest.fn(),
         },
+        
       },
+      // Manager: {
+      //   getInstance: jest.fn(),
+      //   configuration: jest.fn(),
+      // },
       withTaskContext: (WrappedComponent) => {
         return () => ({
           render() {

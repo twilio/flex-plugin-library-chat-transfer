@@ -1,4 +1,4 @@
-const { prepareFlexFunction } = require(Runtime.getFunctions()['common/helpers/function-helper'].path);
+const { prepareFlexFunction } = require(Runtime.getFunctions()["helpers/prepare-function"].path);
 const ConversationsOperations = require(Runtime.getFunctions()['common/twilio-wrappers/conversations'].path);
 const InteractionsOperations = require(Runtime.getFunctions()['common/twilio-wrappers/interactions'].path);
 

@@ -1,6 +1,8 @@
 import { Button, ConversationState, Actions, Template, templates } from '@twilio/flex-ui';
 import { useState } from 'react';
 
+import React from 'react';
+
 import { LeaveChatActionPayload } from '../../flex-hooks/types/ActionPayloads';
 import { StringTemplates } from '../../flex-hooks/strings/ChatTransferStrings';
 
@@ -25,6 +27,7 @@ const LeaveChatButton = ({ conversation }: LeaveChatButtonProps) => {
       size="small"
       onClick={handleLeaveChatClick}
       disabled={buttonDisabled}
+      // title="ConvTransferLeaveChat"
     >
       <Template source={templates[StringTemplates.LeaveChat]} />
     </Button>

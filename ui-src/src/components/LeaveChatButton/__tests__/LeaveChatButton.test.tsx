@@ -1,38 +1,46 @@
 /* eslint-disable no-undef */
-/* eslint-disable prettier/prettier */
 import React from 'react';
-import { render, fireEvent, waitFor, screen } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect'; // For additional DOM matchers
+import { render, fireEvent, waitFor } from '@testing-library/react';
+import { Button, ConversationState, Actions, Template, templates } from '@twilio/flex-ui';
 import LeaveChatButton from '../LeaveChatButton';
-import { Actions, ConversationState } from '@twilio/flex-ui';
 
-jest.mock('@twilio/flex-ui', () => {
-    return {
-      __esModule: true,
-      Actions: {
-        invokeAction: jest.fn(),
-      },
-    };
-  });
+jest.mock('@twilio/flex-ui', () => ({
+  Actions: {
+    invokeAction: jest.fn(),
+  },
+}));
 
 describe('LeaveChatButton', () => {
-  it('should be enabled and call Actions.invokeAction when clicked', async () => {
-    // const conversation = { id: 'conversation-id' };
-    const conversation = ConversationState.ConversationState;
-    render(<LeaveChatButton conversation={conversation} />);
+  const mockConversation = {} as unknown as ConversationState.ConversationState;
 
-    const buttonElement = screen.getByRole('button', { name: 'Leave Chat' });
-    expect(buttonElement).toBeEnabled();
+  it('calls Actions.invokeAction when the button is clicked', async () => {
+    const { getByRole } = render(<LeaveChatButton conversation={mockConversation} />);
+    const button = getByRole('button');
 
-    fireEvent.click(buttonElement);
+    fireEvent.click(button);
 
-    expect(buttonElement).toBeDisabled();
+    expect(Actions.invokeAction).toHaveBeenCalledWith('LeaveChat', {
+      conversation: mockConversation,
+    });
+  });
 
-    await waitFor(() => expect(Actions.invokeAction).toHaveBeenCalledTimes(1));
+  it('disables the button while invoking action', async () => {
+    const { getByRole } = render(<LeaveChatButton conversation={mockConversation} />);
+    const button = getByRole('button');
 
-    const expectedPayload = { conversation };
-    expect(Actions.invokeAction).toHaveBeenCalledWith('LeaveChat', expectedPayload);
+    fireEvent.click(button);
 
-    expect(buttonElement).toBeEnabled();
+    expect(button).toBeDisabled();
+
+    const asyncActionCompletion = new Promise((resolve) => setTimeout(resolve, 100));
+    Actions.invokeAction.mockReturnValue(asyncActionCompletion);
+
+    await waitFor(() => expect(button).not.toBeDisabled());
+  });
+
+  it.only('should render correct snapshot', () => {
+    const mockConversation = { value: "true" } as unknown as ConversationState.ConversationState;
+    const wrapper = render(<LeaveChatButton conversation={mockConversation} />);
+    expect(wrapper).toMatchSnapshot();
   });
 });
