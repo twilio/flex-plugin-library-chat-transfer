@@ -1,64 +1,80 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
-/* eslint-disable no-undef */
-import { registerLeaveChatAction } from '../leaveChat';
-import { Actions, Notifications } from '@twilio/flex-ui';
+import { handleLeaveChatAction } from '../leaveChat';
+import { Notifications } from '@twilio/flex-ui';
+import ChatTransferService from '../../../helpers/APIHelper';
 
+// Mocking dependencies
 jest.mock('@twilio/flex-ui', () => ({
-  Actions: {
-    registerAction: jest.fn(),
-  },
   Notifications: {
     showNotification: jest.fn(),
   },
 }));
-
 jest.mock('../../../helpers/APIHelper', () => ({
   buildRemoveMyPartiticipantAPIPayload: jest.fn(),
+  removeParticipantAPIRequest: jest.fn(),
 }));
 
-const mockConversation = {
-  source: {
-    sid: 'conversationSid',
-  },
-};
-
 describe('handleLeaveChatAction', () => {
-  afterEach(() => {
+  beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it('removes participant from chat', async () => {
-    const mockPayload = { some: 'payload' };
-    require('../../../helpers/APIHelper').buildRemoveMyPartiticipantAPIPayload.mockResolvedValue(mockPayload);
-
-    const mockRemoveParticipantAPIRequest = jest.fn();
-    require('../../../helpers/APIHelper').ChatTransferService = {
-      removeParticipantAPIRequest: mockRemoveParticipantAPIRequest,
+  it('should handle leaving chat successfully', async () => {
+    const payload = {
+      conversation: {
+        source: {
+          sid: 'conversationSid',
+        },
+      },
     };
 
-    registerLeaveChatAction();
+    const removePartcipantAPIPayload = { /* API payload */ };
+    ChatTransferService.buildRemoveMyPartiticipantAPIPayload.mockReturnValue(removePartcipantAPIPayload);
+    ChatTransferService.removeParticipantAPIRequest.mockResolvedValue();
 
-    // expect(require('../../../helpers/APIHelper').buildRemoveMyPartiticipantAPIPayload).toHaveBeenCalledWith(mockConversation);
-    // expect(mockRemoveParticipantAPIRequest).toHaveBeenCalledWith(mockPayload);
+    await handleLeaveChatAction(payload);
+
+    expect(ChatTransferService.buildRemoveMyPartiticipantAPIPayload).toHaveBeenCalledWith(payload.conversation);
+    expect(ChatTransferService.removeParticipantAPIRequest).toHaveBeenCalledWith(removePartcipantAPIPayload);
     expect(Notifications.showNotification).not.toHaveBeenCalled();
   });
 
-  it('shows failure notification when removing participant fails', async () => {
-    require('../../../helpers/APIHelper').buildRemoveMyPartiticipantAPIPayload.mockResolvedValue(null);
-    registerLeaveChatAction();
-
-    expect(Notifications.showNotification).toHaveBeenCalledWith('ChatRemoveParticipantFailed');
-  });
-
-  it('shows failure notification when API request fails', async () => {
-    const mockPayload = { some: 'payload' };
-    require('../../../helpers/APIHelper').buildRemoveMyPartiticipantAPIPayload.mockResolvedValue(mockPayload);
-
-    const mockError = new Error('API request failed');
-    require('../../../helpers/APIHelper').ChatTransferService = {
-      removeParticipantAPIRequest: jest.fn().mockRejectedValue(mockError),
+  it('should handle API request failure', async () => {
+    const payload = {
+      conversation: {
+        source: {
+          sid: 'conversationSid',
+        },
+      },
     };
-    await registerLeaveChatAction();
+
+    const removePartcipantAPIPayload = { /* API payload */ };
+    ChatTransferService.buildRemoveMyPartiticipantAPIPayload.mockReturnValue(removePartcipantAPIPayload);
+    ChatTransferService.removeParticipantAPIRequest.mockRejectedValue(new Error('API request failed'));
+
+    await handleLeaveChatAction(payload);
+
+    expect(ChatTransferService.buildRemoveMyPartiticipantAPIPayload).toHaveBeenCalledWith(payload.conversation);
+    expect(ChatTransferService.removeParticipantAPIRequest).toHaveBeenCalledWith(removePartcipantAPIPayload);
     expect(Notifications.showNotification).toHaveBeenCalledWith('ChatRemoveParticipantFailed');
   });
+
+  it('should handle error building API payload', async () => {
+    const payload = {
+      conversation: {
+        source: {
+          sid: 'conversationSid',
+        },
+      },
+    };
+
+    ChatTransferService.buildRemoveMyPartiticipantAPIPayload.mockReturnValue(null);
+
+    await handleLeaveChatAction(payload);
+
+    expect(ChatTransferService.buildRemoveMyPartiticipantAPIPayload).toHaveBeenCalledWith(payload.conversation);
+    expect(ChatTransferService.removeParticipantAPIRequest).not.toHaveBeenCalled();
+    expect(Notifications.showNotification).toHaveBeenCalledWith('ChatRemoveParticipantFailed');
+  });
+
+  // Add more test cases for different scenarios
 });

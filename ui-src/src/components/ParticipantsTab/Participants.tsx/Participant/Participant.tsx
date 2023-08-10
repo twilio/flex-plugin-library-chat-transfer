@@ -1,7 +1,7 @@
 import { Flex as FlexBox, Box, Button } from '@twilio-paste/core';
-import { UserIcon } from '@twilio-paste/icons/esm/UserIcon';
-import { AgentIcon } from '@twilio-paste/icons/esm/AgentIcon';
-import { CloseIcon } from '@twilio-paste/icons/esm/CloseIcon';
+import { UserIcon } from '@twilio-paste/icons/cjs/UserIcon';
+import { AgentIcon } from '@twilio-paste/icons/cjs/AgentIcon';
+import { CloseIcon } from '@twilio-paste/icons/cjs/CloseIcon';
 import { useState } from 'react';
 import { templates } from '@twilio/flex-ui';
 import React from 'react';
@@ -47,7 +47,7 @@ export const Participant = ({ participantType, name, allowKick, handleKickPartic
       <FlexBox>
         <Box padding="space20">
           <Button variant="secondary" size="icon" disabled={kickHandled || disableKickParticipant} onClick={handleKick}>
-            <CloseIcon decorative title={templates[StringTemplates.Remove]({ name })} />
+            <CloseIcon decorative title="ConvTransferRemove" />
           </Button>
         </Box>
       </FlexBox>

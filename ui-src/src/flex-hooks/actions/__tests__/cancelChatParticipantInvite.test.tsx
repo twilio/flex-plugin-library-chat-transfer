@@ -1,44 +1,67 @@
-import { registerCancelChatParticipantInvite } from '../cancelChatParticipantInvite'; // Update the path to the actual file
+import { handleCancelChatParticipantInvite } from '../cancelChatParticipantInvite';
 import TaskService from '../../../utils/TaskRouter/TaskRouterService';
 import { removeInvitedParticipant } from '../../../helpers/inviteTracker';
-import { Actions } from '@twilio/flex-ui';
+import { Notifications } from '@twilio/flex-ui';
 
-jest.mock('@twilio/flex-ui', () => {
-  return {
-    __esModule: true,
-    Actions: {
-      registerAction: jest.fn(),
-    },
-  };
-});
-
-const conversation = {
-  source: {
-    sid: 'conversationSid',
-    attributes: { someAttribute: 'value' },
+// Mocking dependencies
+jest.mock('../../../utils/TaskRouter/TaskRouterService');
+jest.mock('../../../helpers/inviteTracker');
+jest.mock('@twilio/flex-ui', () => ({
+  Notifications: {
+    showNotification: jest.fn(),
   },
-};
-const invitesTaskSid = 'invitesTaskSid';
-
-jest.mock('../../../utils/TaskRouter/TaskRouterService', () => ({
-  updateTaskAssignmentStatus: jest.fn(),
+  Manager: {
+    getInstance: jest.fn(),
+    configuration: jest.fn(),
+  }
 }));
-
-jest.mock('../../../helpers/inviteTracker', () => ({
-  removeInvitedParticipant: jest.fn(),
-}));
-
 
 describe('handleCancelChatParticipantInvite', () => {
-  afterEach(() => {
-    jest.clearAllMocks();
+  it('should handle cancelling chat participant invite', async () => {
+    const payload = {
+      conversation: {
+        source: {
+          sid: 'conversationSid',
+          attributes: { /* attributes here */ },
+        },
+      },
+      invitesTaskSid: 'invitesTaskSid',
+    };
+
+    // Mocking TaskService.updateTaskAssignmentStatus
+    TaskService.updateTaskAssignmentStatus.mockResolvedValue();
+
+    // Mocking removeInvitedParticipant
+    removeInvitedParticipant.mockResolvedValue();
+
+    await handleCancelChatParticipantInvite(payload);
+
+    expect(TaskService.updateTaskAssignmentStatus).toHaveBeenCalledWith('invitesTaskSid', 'canceled');
+    expect(removeInvitedParticipant).toHaveBeenCalledWith('conversationSid', payload.conversation.source.attributes, 'invitesTaskSid');
+    expect(Notifications.showNotification).toHaveBeenCalledWith('ChatCancelParticipantInviteSuccess');
   });
 
-  it('cancels chat participant invite and shows success notification', async () => {
-    registerCancelChatParticipantInvite();
+  it('should handle API request failure', async () => {
+    const payload = {
+      conversation: {
+        source: {
+          sid: 'conversationSid',
+          attributes: { /* attributes here */ },
+        },
+      },
+      invitesTaskSid: 'invitesTaskSid',
+    };
 
-    expect(TaskService.updateTaskAssignmentStatus).toHaveBeenCalledWith(invitesTaskSid, 'canceled');
-    expect(removeInvitedParticipant).toHaveBeenCalledWith(conversation.source.sid, conversation.source.attributes, invitesTaskSid);
-    // expect(Notifications.showNotification).toHaveBeenCalledWith('ChatCancelParticipantInviteSuccess');
+    // Mocking TaskService.updateTaskAssignmentStatus to throw an error
+    TaskService.updateTaskAssignmentStatus.mockRejectedValue(new Error('API request failed'));
+
+    // Mocking removeInvitedParticipant
+    removeInvitedParticipant.mockResolvedValue();
+
+    await handleCancelChatParticipantInvite(payload);
+
+    expect(TaskService.updateTaskAssignmentStatus).toHaveBeenCalledWith('invitesTaskSid', 'canceled');
+    expect(removeInvitedParticipant).not.toHaveBeenCalled();
+    expect(Notifications.showNotification).toHaveBeenCalledWith('ChatCancelParticipantInviteFailed');
   });
 });

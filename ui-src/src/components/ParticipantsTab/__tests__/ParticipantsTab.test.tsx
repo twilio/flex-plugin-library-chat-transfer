@@ -16,7 +16,7 @@ jest.mock('@twilio/flex-ui', () => {
     };
   });
 
-jest.mock('../../hooks', () => ({
+jest.mock('../hooks', () => ({
   getUpdatedParticipantDetails: jest.fn(),
   getUpdatedInvitedParticipantDetails: jest.fn(),
 }));

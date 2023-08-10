@@ -4,6 +4,10 @@ import { FlexPlugin } from '@twilio/flex-plugin';
 import CustomizePasteElements from './utils/PasteThemeProvider';
 import { ParticipantTabLabel } from './components/ParticipantTabLabel';
 
+import {actionHook as ShowDirectoryActionHook} from './flex-hooks/actions/ShowDirectory';
+import {actionHook as TransferTaskActionHook} from './flex-hooks/actions/TransferTask';
+import {actionHook as CompleteTaskActionHook} from './utils/TaskRouter/CompleteTask';
+
 import { registerCancelChatParticipantInvite } from './flex-hooks/actions/cancelChatParticipantInvite';
 import { registerCustomChatTransferAction } from './flex-hooks/actions/chatTransferTask';
 import { registerLeaveChatAction } from './flex-hooks/actions/leaveChat';
@@ -38,6 +42,9 @@ export default class ConversationTransferPlugin extends FlexPlugin {
       addConvTransferButtons,
       removeDialpadForConvTransfer,
       addParticipantsTab,
+      ShowDirectoryActionHook,
+      TransferTaskActionHook,
+      CompleteTaskActionHook,
     ];
 
     initializers.forEach((initializer) => initializer(flex, manager));

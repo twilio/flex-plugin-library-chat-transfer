@@ -1,6 +1,6 @@
 import * as Flex from '@twilio/flex-ui';
 import { useState, useEffect } from 'react';
-import { Stack } from '@twilio-paste/core';
+import { Stack, Box } from '@twilio-paste/core';
 import { ConversationState, styled, Actions } from '@twilio/flex-ui';
 
 import { Participants } from './Participants.tsx/Participants';

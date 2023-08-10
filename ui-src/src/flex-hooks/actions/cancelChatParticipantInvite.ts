@@ -5,7 +5,7 @@ import { removeInvitedParticipant } from '../../helpers/inviteTracker';
 import { NotificationIds } from '../../flex-hooks/notifications/TransferResult';
 import { CancelChatParticipantInviteActionPayload } from '../types/ActionPayloads';
 
-const handleCancelChatParticipantInvite = async (payload: CancelChatParticipantInviteActionPayload) => {
+export const handleCancelChatParticipantInvite = async (payload: CancelChatParticipantInviteActionPayload) => {
   const { conversation, invitesTaskSid } = payload;
   console.log('handleCancelChatParticipantInvite', conversation, invitesTaskSid);
 

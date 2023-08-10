@@ -3,21 +3,18 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { Participant } from '../Participant';
-import { UserIcon } from '@twilio-paste/icons/esm/UserIcon';
-import { AgentIcon } from '@twilio-paste/icons/esm/AgentIcon';
-import { CloseIcon } from '@twilio-paste/icons/esm/CloseIcon';
 
-jest.mock('@twilio-paste/icons/esm/UserIcon', () => {
-  const UserIcon = <div title="User Icon"></div>;
-});
+// jest.mock('@twilio-paste/icons/esm/UserIcon', () => {
+//   const UserIcon = <div title="User Icon"></div>;
+// });
 
-jest.mock('@twilio-paste/icons/esm/AgentIcon', () => {
-  const AgentIcon = <div title="Agent Icon"></div>;
-});
+// jest.mock('@twilio-paste/icons/esm/AgentIcon', () => {
+//   const AgentIcon = <div title="Agent Icon"></div>;
+// });
 
-jest.mock('@twilio-paste/icons/esm/CloseIcon', () => {
-  const CloseIcon = <div title="Close Icon"></div>;
-});
+// jest.mock('@twilio-paste/icons/esm/CloseIcon', () => {
+//   const CloseIcon = <div title="Close Icon"></div>;
+// });
 
 // jest.mock('@twilio-paste/icons/esm/UserIcon', () => ({
 //   UserIcon: () => <div title="User Icon"></div>,

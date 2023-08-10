@@ -4,7 +4,7 @@ import { Template, templates } from '@twilio/flex-ui';
 import { Participant } from './Participant/Participant';
 import { ParticipantDetails } from '../../../flex-hooks/types/ParticipantDetails';
 import { StringTemplates } from '../../../flex-hooks/strings/ChatTransferStrings';
-
+import React from 'react';
 interface ParticipantsProps {
   participantDetails: ParticipantDetails[];
   handleKickParticipant: (interactionParticipantSid: string) => void;

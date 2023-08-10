@@ -1,9 +1,10 @@
 import { Flex as FlexBox, Box, Button } from '@twilio-paste/core';
-import { ChatIcon } from '@twilio-paste/icons/esm/ChatIcon';
-import { AgentIcon } from '@twilio-paste/icons/esm/AgentIcon';
-import { CloseIcon } from '@twilio-paste/icons/esm/CloseIcon';
+import { ChatIcon } from '@twilio-paste/icons/cjs/ChatIcon';
+import { AgentIcon } from '@twilio-paste/icons/cjs/AgentIcon';
+import { CloseIcon } from '@twilio-paste/icons/cjs/CloseIcon';
 import { useState } from 'react';
 import { templates } from '@twilio/flex-ui';
+import React from 'react';
 
 import { ParticipantInviteType } from '../../../../flex-hooks/types/ParticipantInvite';
 import { StringTemplates } from '../../../../flex-hooks/strings/ChatTransferStrings';
@@ -28,9 +29,9 @@ export const InvitedParticipant = ({
 
   const icon =
     inviteTargetType === 'Worker' ? (
-      <AgentIcon decorative={false} title={templates[StringTemplates.Agent]()} />
+      <AgentIcon decorative={false} title="ConvTransferAgent" />
     ) : (
-      <ChatIcon decorative={false} title={templates[StringTemplates.Queue]()} />
+      <ChatIcon decorative={false} title="ConvTransferQueue" />
     );
 
   return (
@@ -46,7 +47,7 @@ export const InvitedParticipant = ({
       <FlexBox>
         <Box padding="space20">
           <Button variant="secondary" size="icon" disabled={cancelHandled} onClick={handleCancel}>
-            <CloseIcon decorative title={templates[StringTemplates.CancelInvite]({ name: participantName })} />
+            <CloseIcon decorative title="ConvTransferCancelInvite" />
           </Button>
         </Box>
       </FlexBox>

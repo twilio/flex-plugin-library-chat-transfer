@@ -4,7 +4,7 @@ import ChatTransferService, { buildRemovePartiticipantAPIPayload } from '../../h
 import { NotificationIds } from '../../flex-hooks/notifications/TransferResult';
 import { RemoveChatParticipantActionPayload } from '../types/ActionPayloads';
 
-const handleRemoveChatParticipant = async (payload: RemoveChatParticipantActionPayload) => {
+export const handleRemoveChatParticipant = async (payload: RemoveChatParticipantActionPayload) => {
   const { task, interactionParticipantSid } = payload;
   console.log('handleRemoveChatParticipant', task, interactionParticipantSid);
 
