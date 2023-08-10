@@ -189,7 +189,7 @@ class ChatTransferService extends ApiService {
     };
 
     return this.fetchJsonWithReject<TransferRESTResponse>(
-      `${this.serverlessProtocol}://${this.serverlessDomain}/features/conversation-transfer/flex/invite-participant`,
+      `${this.serverlessProtocol}://${this.serverlessDomain}/conversation-transfer/invite-participant`,
       {
         method: 'post',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -214,7 +214,7 @@ class ChatTransferService extends ApiService {
     };
 
     return this.fetchJsonWithReject<TransferRESTResponse>(
-      `${this.serverlessProtocol}://${this.serverlessDomain}/features/conversation-transfer/flex/remove-participant`,
+      `${this.serverlessProtocol}://${this.serverlessDomain}/conversation-transfer/remove-participant`,
       {
         method: 'post',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },

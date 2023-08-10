@@ -184,7 +184,7 @@ class TaskRouterService extends ApiService {
     };
 
     return this.fetchJsonWithReject<UpdateTaskAttributesResponse>(
-      `${this.serverlessProtocol}://${this.serverlessDomain}/common/flex/taskrouter/update-task-assignment-status`,
+      `${this.serverlessProtocol}://${this.serverlessDomain}/taskrouter/update-task-assignment-status`,
       {
         method: 'post',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -205,7 +205,7 @@ class TaskRouterService extends ApiService {
     };
 
     return this.fetchJsonWithReject<UpdateTaskAttributesResponse>(
-      `${this.serverlessProtocol}://${this.serverlessDomain}/common/flex/taskrouter/update-task-attributes`,
+      `${this.serverlessProtocol}://${this.serverlessDomain}/taskrouter/update-task-attributes`,
       {
         method: 'post',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -242,7 +242,7 @@ class TaskRouterService extends ApiService {
     };
 
     return this.fetchJsonWithReject<GetWorkerChannelsResponse>(
-      `${this.serverlessProtocol}://${this.serverlessDomain}/common/flex/taskrouter/get-worker-channels`,
+      `${this.serverlessProtocol}://${this.serverlessDomain}/taskrouter/get-worker-channels`,
       {
         method: 'post',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -268,7 +268,7 @@ class TaskRouterService extends ApiService {
     };
 
     return this.fetchJsonWithReject<UpdateWorkerChannelResponse>(
-      `${this.serverlessProtocol}://${this.serverlessDomain}/common/flex/taskrouter/update-worker-channel`,
+      `${this.serverlessProtocol}://${this.serverlessDomain}/taskrouter/update-worker-channel`,
       {
         method: 'post',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },

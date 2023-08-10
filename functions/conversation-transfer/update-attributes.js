@@ -1,21 +1,19 @@
 const { prepareFlexFunction, extractStandardResponse } = require(Runtime.getFunctions()["helpers/prepare-function"].path);
-const TaskRouterOperations = require(Runtime.getFunctions()['twilio-wrappers/taskrouter'].path);
+const ConversationsOperations = require(Runtime.getFunctions()['twilio-wrappers/conversations'].path);
 
 const requiredParameters = [
-  { key: 'taskSid', purpose: 'unique ID of task to update' },
-  {
-    key: 'attributesUpdate',
-    purpose: 'object to overwrite on existing task attributes',
-  },
+  { key: 'conversationSid', purpose: 'conversation to be updated' },
+  { key: 'attributes', purpose: 'new attributes' },
 ];
 
 exports.handler = prepareFlexFunction(requiredParameters, async (context, event, callback, response, handleError) => {
   try {
-    const { taskSid, attributesUpdate } = event;
-    const result = await TaskRouterOperations.updateTaskAttributes({
+    const { conversationSid, attributes } = event;
+
+    const result = await ConversationsOperations.updateAttributes({
       context,
-      taskSid,
-      attributesUpdate,
+      conversationSid,
+      attributes,
     });
 
     response.setStatusCode(result.status);
