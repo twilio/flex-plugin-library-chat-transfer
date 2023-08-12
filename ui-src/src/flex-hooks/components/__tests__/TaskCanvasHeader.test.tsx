@@ -4,7 +4,7 @@ import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 import { addConvTransferButtons } from '../TaskCanvasHeader';
 import '@testing-library/jest-dom';
-import { TaskCanvasHeader, Manager } from '@twilio/flex-ui';
+import { TaskCanvasHeader } from '@twilio/flex-ui';
 import * as Flex from '@twilio/flex-ui'
 jest.mock('@twilio/flex-ui', () => {
     return {
@@ -12,13 +12,12 @@ jest.mock('@twilio/flex-ui', () => {
       TaskCanvasHeader: {
         Content: {
           add: jest.fn(),
+          remove: jest.fn(),
         },
-        
       },
-      // Manager: {
-      //   getInstance: jest.fn(),
-      //   configuration: jest.fn(),
-      // },
+      Manager: {
+        getInstance: jest.fn(),
+      },
       withTaskContext: (WrappedComponent) => {
         return () => ({
           render() {
@@ -29,7 +28,7 @@ jest.mock('@twilio/flex-ui', () => {
     };
   });
 
-  describe('add transfer button', () => {
+  describe('add transfer button to taskcanvasheader', () => {
     let flex;
     it('add conversation transfer button to taskcanvasheader', async () => {
       const addContentSpy1 = jest.spyOn(TaskCanvasHeader.Content, 'add');

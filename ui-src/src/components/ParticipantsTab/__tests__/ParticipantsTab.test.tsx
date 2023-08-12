@@ -5,14 +5,21 @@ import { render, screen } from '@testing-library/react';
 import { ParticipantsTab } from '../ParticipantsTab';
 import { Actions } from '@twilio/flex-ui';
 import { getUpdatedParticipantDetails, getUpdatedInvitedParticipantDetails } from '../hooks';
-
+import { wrap } from 'lodash';
+import { ITask, ConversationState } from '@twilio/flex-ui';
 jest.mock('@twilio/flex-ui', () => {
     return {
       __esModule: true,
       Actions: {
         invokeAction: jest.fn(),
       },
-      IconButton: (props) => <button {...props} />,
+      styled:{
+        div: () => <div />,
+      },
+      // IconButton: (props) => <button {...props} />,
+      IconButton: jest.fn().mockImplementation(({ children }) => {
+        return children;
+      }),
     };
   });
 
@@ -22,8 +29,8 @@ jest.mock('../hooks', () => ({
 }));
 
 describe('ParticipantsTab', () => {
-  const mockTask = {}; // mockTask what value should i put in - shyam
-  const mockConversation = {}; //mockConversation what value should i put in  - shyam
+  const mockTask = { sid: '1672673' } as unknown as ITask;
+  const mockConversation = {sid : '1111'} as unkown as ConversationState.ConversationState;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -33,8 +40,7 @@ describe('ParticipantsTab', () => {
     getUpdatedParticipantDetails.mockResolvedValue([]);
     getUpdatedInvitedParticipantDetails.mockReturnValue([]);
 
-    render(<ParticipantsTab task={mockTask} conversation={mockConversation} />);
-
-    //expect me kya dalna he - shyam
+    const wrapper = render(<ParticipantsTab task={mockTask} conversation={mockConversation} />);
+    expect(wrapper).toMatchSnapshot();
   });
 });

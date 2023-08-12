@@ -1,11 +1,11 @@
 import * as Flex from '@twilio/flex-ui';
 import { ITask } from '@twilio/flex-ui';
-
+import { Manager } from '@twilio/flex-ui'
 import { ParticipantDetails } from '../../flex-hooks/types/ParticipantDetails';
 import { InvitedParticipantDetails, InvitedParticipants } from '../../flex-hooks/types/InvitedParticipantDetails';
 import { ConversationState } from '../../flex-hooks/types/conversations';
 
-const manager = Flex.Manager.getInstance();
+const manager = Manager.getInstance();
 
 // check that the members of the conversation match the participant details
 const participantDetailsUpToDateCheck = (

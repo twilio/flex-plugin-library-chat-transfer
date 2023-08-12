@@ -11,7 +11,7 @@ export const ParticipantTabLabelContainer = () => {
         console.log(participantCount);
         return (
           <Stack orientation="horizontal" spacing="space20">
-            <Template source={templates[StringTemplates.Participants]} />
+            {/* <Template source={templates[StringTemplates.Participants]} /> */}
             <Badge as="span" variant="info">
               {participantCount}
             </Badge>

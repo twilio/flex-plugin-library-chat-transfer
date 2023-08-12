@@ -1,5 +1,5 @@
 const { prepareFlexFunction } = require(Runtime.getFunctions()["helpers/prepare-function"].path);
-const ConversationsOperations = require(Runtime.getFunctions()['twilio-wrappers/conversations'].path);
+const ConversationsOperations = require(Runtime.getFunctions()["twilio-wrappers/conversations"].path);
 const InteractionsOperations = require(Runtime.getFunctions()['twilio-wrappers/interactions'].path);
 
 const requiredParameters = [

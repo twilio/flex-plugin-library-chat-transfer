@@ -1,6 +1,6 @@
 import * as Flex from '@twilio/flex-ui';
 import { ITask, TaskHelper, StateHelper } from '@twilio/flex-ui';
-
+import React from 'react';
 import TransferButton from '../../components/TransferButton';
 import LeaveChatButton from '../../components/LeaveChatButton';
 import { countOfOutstandingInvitesForConversation } from '../../helpers/inviteTracker';
@@ -14,7 +14,7 @@ export const componentName = FlexComponent.TaskCanvasHeader;
 export function addConvTransferButtons(flex: typeof Flex) {
   // if (!isColdTransferEnabled() && !isMultiParticipantEnabled()) return;
 
-  flex.TaskCanvasHeader.Content.add(<TransferButton key="conversation-transfer-button" />, {
+  Flex.TaskCanvasHeader.Content.add(<TransferButton key="conversation-transfer-button" />, {
     sortOrder: 1,
     if: ({ task }) => TaskHelper.isCBMTask(task) && task.taskStatus === 'assigned',
   });
@@ -35,9 +35,9 @@ export function addConvTransferButtons(flex: typeof Flex) {
     return false;
   };
 
-  flex.TaskCanvasHeader.Content.add(<LeaveChatButton key="leave-chat" />, {
-    if: ({ task }: Props) => replaceEndTaskButton(task),
-  });
+  // Flex.TaskCanvasHeader.Content.add(<LeaveChatButton key="leave-chat" />, {
+  //   if: ({ task }: Props) => replaceEndTaskButton(task),
+  // });
 
-  flex.TaskCanvasHeader.Content.remove('actions', { if: ({ task }: Props) => replaceEndTaskButton(task) });
+  // Flex.TaskCanvasHeader.Content.remove('actions', { if: ({ task }: Props) => replaceEndTaskButton(task) });
 };

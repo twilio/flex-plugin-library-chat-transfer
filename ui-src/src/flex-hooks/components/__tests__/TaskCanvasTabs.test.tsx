@@ -31,7 +31,9 @@ jest.mock('@twilio/flex-ui', () => {
           add: jest.fn(),
         },
       },
-      
+      Manager: {
+        getInstance: jest.fn(),
+      }
     };
   });
 

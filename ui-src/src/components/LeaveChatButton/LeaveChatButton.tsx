@@ -27,7 +27,7 @@ const LeaveChatButton = ({ conversation }: LeaveChatButtonProps) => {
       size="small"
       onClick={handleLeaveChatClick}
       disabled={buttonDisabled}
-      // title="ConvTransferLeaveChat"
+      title="ConvTransferLeaveChat"
     >
       <Template source={templates[StringTemplates.LeaveChat]} />
     </Button>

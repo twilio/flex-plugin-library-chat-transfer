@@ -27,7 +27,7 @@ export const InvitedParticipants = ({ invitedParticipantDetails, handleCancelInv
   return (
     <Card padding="space60">
       <Heading as="h2" variant="heading20">
-        <Template source={templates['ConvTransferInvitedParticipants']} />
+        {/* <Template source={templates['ConvTransferInvitedParticipants']} /> */}
       </Heading>
       <Stack orientation="vertical" spacing="space20">
         {invitedParticipants}

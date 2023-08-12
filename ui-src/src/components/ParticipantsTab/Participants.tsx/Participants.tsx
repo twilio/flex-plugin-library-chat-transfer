@@ -32,7 +32,7 @@ export const Participants = ({ participantDetails, handleKickParticipant }: Part
   return (
     <Card padding="space60">
       <Heading as="h2" variant="heading20">
-        <Template source={templates[StringTemplates.Participants]} />
+        {/* <Template source={templates[StringTemplates.Participants]} /> */}
       </Heading>
       <Stack orientation="vertical" spacing="space20">
         {participants}

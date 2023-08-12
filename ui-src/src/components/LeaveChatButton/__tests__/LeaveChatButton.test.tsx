@@ -39,7 +39,7 @@ describe('LeaveChatButton', () => {
   });
 
   it.only('should render correct snapshot', () => {
-    const mockConversation = { value: "true" } as unknown as ConversationState.ConversationState;
+    const mockConversation = { key: 'value' } as unknown as ConversationState.ConversationState;
     const wrapper = render(<LeaveChatButton conversation={mockConversation} />);
     expect(wrapper).toMatchSnapshot();
   });

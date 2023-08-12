@@ -2,7 +2,7 @@ import * as Flex from '@twilio/flex-ui';
 import { useState, useEffect } from 'react';
 import { Stack, Box } from '@twilio-paste/core';
 import { ConversationState, styled, Actions } from '@twilio/flex-ui';
-
+import React from 'react';
 import { Participants } from './Participants.tsx/Participants';
 import { InvitedParticipants } from './InvitedParticipants/InvitedParticipants';
 import { ParticipantDetails } from '../../flex-hooks/types/ParticipantDetails';
@@ -29,7 +29,7 @@ interface ParticipantsTabProps {
 export const ParticipantsTab = ({ task, conversation }: ParticipantsTabProps) => {
   const [participantDetails, setParticipantDetails] = useState<ParticipantDetails[]>([]);
   const [invitedParticipantDetails, setInvitedParticipantDetails] = useState<InvitedParticipantDetails[]>([]);
-
+  console.log(ParticipantsTabContainer);
   useEffect(() => {
     const updateParticipants = () => {
       getUpdatedParticipantDetails(task, conversation, participantDetails).then((participantDetails) => {
@@ -56,19 +56,19 @@ export const ParticipantsTab = ({ task, conversation }: ParticipantsTabProps) =>
 
   return (
     <ParticipantsTabContainer>
-      <Box as="div"
+      {/* <Box as="div"
         margin="auto"
         paddingRight="space60"
-    >
-      {/* <Stack orientation="vertical" spacing="space40"> */}
+    > */}
+      <Stack orientation="vertical" spacing="space40">
         <Participants participantDetails={participantDetails} handleKickParticipant={handleKickParticipant} />
 
         <InvitedParticipants
           invitedParticipantDetails={invitedParticipantDetails}
           handleCancelInvite={handleCancelInvite}
         />
-      {/* </Stack> */}
-      </Box>
+      </Stack>
+      {/* </Box> */}
     </ParticipantsTabContainer>
   );
 };
