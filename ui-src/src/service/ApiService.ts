@@ -1,15 +1,17 @@
 import * as Flex from '@twilio/flex-ui';
-import { EncodedParams } from '../types/serverless';
-import { ErrorManager, FlexErrorSeverity, FlexPluginErrorType } from '../utils/ErrorManager';
+import { EncodedParams } from '../types/Params';
 import { random } from 'lodash';
+import { ErrorManager, FlexPluginErrorType } from '../utils/ErrorManager';
 
 function delay<T>(ms: number, result?: T) {
   return new Promise((resolve) => setTimeout(() => resolve(result), ms));
 }
 
+const { FLEX_APP_SERVERLESS_FUNCTONS_DOMAIN } = process.env;
+
 export default abstract class ApiService {
   protected manager = Flex.Manager.getInstance();
-  serverlessDomain: string;
+  readonly serverlessDomain: string;
 
   constructor() {
     this.serverlessDomain = '';
@@ -18,7 +20,7 @@ export default abstract class ApiService {
       this.serverlessDomain =
         process.env.FLEX_APP_SERVERLESS_FUNCTONS_DOMAIN || '<FLEX_APP_SERVERLESS_FUNCTONS_DOMAIN>';
 
-      if (!this.serverlessDomain) throw Error('FLEX_APP_SERVERLESS_FUNCTONS_DOMAIN is not set');
+      if (!this.serverlessDomain) throw Error('serverless_functions_domain is not set');
     } catch (e) {
       ErrorManager.createAndProcessError('Could not set serverless function domain', {
         type: FlexPluginErrorType.serverless,
@@ -44,20 +46,15 @@ export default abstract class ApiService {
   protected fetchJsonWithReject<T>(url: string, config: RequestInit, attempts = 0): Promise<T> {
     return fetch(url, config)
       .then((response) => {
-        console.log('resp', response.ok);
         if (!response.ok) {
           throw response;
         }
         return response.json();
       })
       .catch(async (error) => {
-        // Try to return proper error message from both caught promises and Error objects
-        // https://gist.github.com/odewahn/5a5eeb23279eed6a80d7798fdb47fe91
         try {
-          // Generic retry when calls return a 'too many requests' response
-          // request is delayed by a random number which grows with the number of retries
-          if (error.status === 429 && attempts < 10) {
-            await delay(random(100, 750) + attempts * 100);
+          if (error.status === 429 && attempts < 3) {
+            await delay(random(10, 50) + attempts * 100);
             return await this.fetchJsonWithReject<T>(url, config, attempts + 1);
           }
           return error.json().then((response: any) => {

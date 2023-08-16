@@ -1,25 +1,43 @@
 import * as Flex from '@twilio/flex-ui';
+import { ITask, TaskHelper, StateHelper } from '@twilio/flex-ui';
 import React from 'react';
 import TransferButton from '../../components/TransferButton';
-import { ErrorManager, FlexPluginErrorType } from '../../utils/ErrorManager';
-//import { isFeatureEnabled } from '../../index';
+import LeaveChatButton from '../../components/LeaveChatButton';
+import { countOfOutstandingInvitesForConversation } from '../../helpers/inviteTracker';
+import { FlexComponent } from '../types/FlexComponent';
 
-export function addTransferButtonToChatTaskView(flex: typeof Flex, manager: Flex.Manager) {
-  //if(!isFeatureEnabled()) return;
-  try {
-    Flex.TaskCanvasHeader.Content.add(<TransferButton key="chat-transfer-button" />, {
-      sortOrder: 1,
-      if: (props) =>
-        Flex.TaskHelper.isChatBasedTask(props.task) &&
-        !Flex.TaskHelper.isCBMTask(props.task) &&
-        props.task.taskStatus === 'assigned',
-    });
-  } catch (e) {
-    ErrorManager.createAndProcessError('Could not add content for Flex component', {
-      type: FlexPluginErrorType.programabelComponents,
-      description: e instanceof Error ? `${e.message}` : 'Could not add content for Flex component',
-      context: 'Plugin.Component.TaskCanvasHeader',
-      wrappedError: e,
-    });
-  }
+interface Props {
+  task: ITask;
 }
+
+export const componentName = FlexComponent.TaskCanvasHeader;
+export function addConvTransferButtons(flex: typeof Flex) {
+  // if (!isColdTransferEnabled() && !isMultiParticipantEnabled()) return;
+
+  Flex.TaskCanvasHeader.Content.add(<TransferButton key="conversation-transfer-button" />, {
+    sortOrder: 1,
+    if: ({ task }) => TaskHelper.isCBMTask(task) && task.taskStatus === 'assigned',
+  });
+
+  // if (!isMultiParticipantEnabled()) return;
+
+  const replaceEndTaskButton = (task: ITask) => {
+    if (TaskHelper.isCBMTask(task) && task.taskStatus === 'assigned') {
+      // more than two participants or are there any active invites?
+      const conversationState = StateHelper.getConversationStateForTask(task);
+      if (
+        conversationState &&
+        (conversationState.participants.size > 2 || countOfOutstandingInvitesForConversation(conversationState))
+      ) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  // Flex.TaskCanvasHeader.Content.add(<LeaveChatButton key="leave-chat" />, {
+  //   if: ({ task }: Props) => replaceEndTaskButton(task),
+  // });
+
+  // Flex.TaskCanvasHeader.Content.remove('actions', { if: ({ task }: Props) => replaceEndTaskButton(task) });
+};

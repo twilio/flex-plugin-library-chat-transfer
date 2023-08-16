@@ -239,6 +239,9 @@ module.exports = {
       },
     });
   },
+  TaskContext: {
+    Consumer: React.Fragment,
+  },
   withTheme: (WrappedComponent) => {
     return () => ({
       render() {
