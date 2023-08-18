@@ -127,6 +127,11 @@ module.exports = {
       remove: jest.fn(),
     },
   },
+  TaskCanvasTabs: {
+    Content: {
+      add: jest.fn(),
+    },
+  },
   CallCanvasActions: {
     Content: {
       add: jest.fn(),

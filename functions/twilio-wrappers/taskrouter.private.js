@@ -1,8 +1,6 @@
-const { merge, isString, isObject, isNumber, isBoolean, omitBy, isNil } = require("lodash");
+const { merge, isString, isObject, isNumber, isBoolean, omitBy, isNil } = require('lodash');
 
-const retryHandler = require(Runtime.getFunctions()[
-  "twilio-wrappers/retry-handler"
-].path).retryHandler;
+const retryHandler = require(Runtime.getFunctions()['twilio-wrappers/retry-handler'].path).retryHandler;
 
 /**
  * @param {object} parameters the parameters for the function
@@ -18,19 +16,18 @@ const retryHandler = require(Runtime.getFunctions()[
 exports.updateTaskAttributes = async function updateTaskAttributes(parameters) {
   const { attempts, taskSid, attributesUpdate, context } = parameters;
 
-  if (!isNumber(attempts))
-    throw "Invalid parameters object passed. Parameters must contain the number of attempts";
-  if (!isString(taskSid))
-    throw "Invalid parameters object passed. Parameters must contain the taskSid string";
+  if (!isNumber(attempts)) throw 'Invalid parameters object passed. Parameters must contain the number of attempts';
+  if (!isString(taskSid)) throw 'Invalid parameters object passed. Parameters must contain the taskSid string';
   if (!isString(attributesUpdate))
-    throw "Invalid parameters object passed. Parameters must contain attributesUpdate JSON string";
+    throw 'Invalid parameters object passed. Parameters must contain attributesUpdate JSON string';
 
   try {
-    const axios = require("axios");
+    const axios = require('axios');
 
     const region = context.TWILIO_REGION ? context.TWILIO_REGION.split('-')[0] : '';
-    const hostName = region ? `https://taskrouter.${region}.twilio.com` : "https://taskrouter.twilio.com";
-    const taskContextURL = `${hostName}/v1/Workspaces/${process.env.TWILIO_FLEX_WORKSPACE_SID}/Tasks/${taskSid}`;    let config = {
+    const hostName = region ? `https://taskrouter.${region}.twilio.com` : 'https://taskrouter.twilio.com';
+    const taskContextURL = `${hostName}/v1/Workspaces/${process.env.TWILIO_FLEX_WORKSPACE_SID}/Tasks/${taskSid}`;
+    let config = {
       auth: {
         username: process.env.ACCOUNT_SID,
         password: process.env.AUTH_TOKEN,
@@ -44,17 +41,13 @@ exports.updateTaskAttributes = async function updateTaskAttributes(parameters) {
     task.attributes = JSON.parse(getResponse.data.attributes);
     task.revision = JSON.parse(getResponse.headers.etag);
     // merge the objects
-    let updatedTaskAttributes = omitBy(merge(
-      {},
-      task.attributes,
-      JSON.parse(attributesUpdate)
-    ), isNil);
+    let updatedTaskAttributes = omitBy(merge({}, task.attributes, JSON.parse(attributesUpdate)), isNil);
 
     // if-match the revision number to ensure
     // no update collisions
     config.headers = {
-      "If-Match": task.revision,
-      "content-type": "application/x-www-form-urlencoded",
+      'If-Match': task.revision,
+      'content-type': 'application/x-www-form-urlencoded',
     };
 
     const data = new URLSearchParams({

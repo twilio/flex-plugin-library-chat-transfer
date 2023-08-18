@@ -1,6 +1,6 @@
 import * as Flex from '@twilio/flex-ui';
 import { useState, useEffect } from 'react';
-import { Stack, Box } from '@twilio-paste/core';
+import { Stack } from '@twilio-paste/core';
 import { ConversationState, styled, Actions } from '@twilio/flex-ui';
 import React from 'react';
 import { Participants } from './Participants.tsx/Participants';
@@ -13,14 +13,22 @@ import {
   RemoveChatParticipantActionPayload,
 } from '../../flex-hooks/types/ActionPayloads';
 
-const ParticipantsTabContainer = styled.div`
+const ParticipantsTabContainer = styled('div')`
   padding-left: 3%;
   padding-right: 3%;
   padding-top: 3%;
   width: 100%;
   overflow-y: scroll;
 `;
-
+// const classNames = {
+//   ParticipantsTabContainerStyle: {
+//     paddingLeft: '3%',
+//     paddingRight: '3%',
+//     paddingTop: '3%',
+//     width: '100%',
+//     overflowY: 'scroll',
+//   },
+// };
 interface ParticipantsTabProps {
   task: Flex.ITask;
   conversation: ConversationState.ConversationState;
@@ -29,7 +37,6 @@ interface ParticipantsTabProps {
 export const ParticipantsTab = ({ task, conversation }: ParticipantsTabProps) => {
   const [participantDetails, setParticipantDetails] = useState<ParticipantDetails[]>([]);
   const [invitedParticipantDetails, setInvitedParticipantDetails] = useState<InvitedParticipantDetails[]>([]);
-  console.log(ParticipantsTabContainer);
   useEffect(() => {
     const updateParticipants = () => {
       getUpdatedParticipantDetails(task, conversation, participantDetails).then((participantDetails) => {
@@ -56,10 +63,6 @@ export const ParticipantsTab = ({ task, conversation }: ParticipantsTabProps) =>
 
   return (
     <ParticipantsTabContainer>
-      {/* <Box as="div"
-        margin="auto"
-        paddingRight="space60"
-    > */}
       <Stack orientation="vertical" spacing="space40">
         <Participants participantDetails={participantDetails} handleKickParticipant={handleKickParticipant} />
 
@@ -68,7 +71,6 @@ export const ParticipantsTab = ({ task, conversation }: ParticipantsTabProps) =>
           handleCancelInvite={handleCancelInvite}
         />
       </Stack>
-      {/* </Box> */}
     </ParticipantsTabContainer>
   );
 };

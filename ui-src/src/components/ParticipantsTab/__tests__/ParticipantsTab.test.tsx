@@ -4,24 +4,25 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ParticipantsTab } from '../ParticipantsTab';
 import { Actions } from '@twilio/flex-ui';
+import '@testing-library/jest-dom';
 import { getUpdatedParticipantDetails, getUpdatedInvitedParticipantDetails } from '../hooks';
 import { wrap } from 'lodash';
 import { ITask, ConversationState } from '@twilio/flex-ui';
-jest.mock('@twilio/flex-ui', () => {
-    return {
-      __esModule: true,
-      Actions: {
-        invokeAction: jest.fn(),
-      },
-      styled:{
-        div: () => <div />,
-      },
-      // IconButton: (props) => <button {...props} />,
-      IconButton: jest.fn().mockImplementation(({ children }) => {
-        return children;
-      }),
-    };
-  });
+// jest.mock('@twilio/flex-ui', () => {
+//     return {
+//       __esModule: true,
+//       Actions: {
+//         invokeAction: jest.fn(),
+//       },
+//       styled:{
+//         div: () => <div />,
+//       },
+//       // IconButton: (props) => <button {...props} />,
+//       IconButton: jest.fn().mockImplementation(({ children }) => {
+//         return children;
+//       }),
+//     };
+//   });
 
 jest.mock('../hooks', () => ({
   getUpdatedParticipantDetails: jest.fn(),

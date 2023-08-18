@@ -1,6 +1,6 @@
 {
-  "name": "flex-plugin-library-chat-transfer",
-  "version": "2.0.0",
+  "name": "plibo-chat-transfer",
+  "version": "1.0.1-test",
   "private": true,
   "scripts": {
     "test": "jest",

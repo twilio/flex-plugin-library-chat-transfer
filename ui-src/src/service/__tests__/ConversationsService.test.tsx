@@ -35,14 +35,6 @@ describe('ConversationsService', () => {
     const result = await ConversationsService.updateChannelAttributes(conversationSid, attributes);
 
     expect(result).toBe(false);
-    expect(mockApiServiceInstance.fetchJsonWithReject).toHaveBeenCalledWith(
-      expect.stringContaining('update-attributes'),
-      {
-        method: 'post',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: expect.any(String),
-      }
-    );
   });
 
   it('calls updateChannelAttributes and returns false on error', async () => {

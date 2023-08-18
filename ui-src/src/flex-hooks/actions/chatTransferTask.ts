@@ -7,10 +7,13 @@ import { countOfOutstandingInvitesForConversation } from '../../helpers/inviteTr
 
 export const handleChatTransferAction = async (payload: TransferActionPayload) => {
   const { task, targetSid } = payload;
-  console.log('transfer', payload);
-
+  // console.log('transfer', payload);
   const conversation = StateHelper.getConversationStateForTask(task);
-
+  // console.log('conversation', conversation);
+  // console.log(
+  //   'countOfOutstandingInvitesForConversation(conversation)',
+  //   countOfOutstandingInvitesForConversation(conversation),
+  // );
   if (conversation && countOfOutstandingInvitesForConversation(conversation) !== 0) {
     Notifications.showNotification(NotificationIds.ChatCancelParticipantInviteFailedInviteOutstanding);
     return;
@@ -18,20 +21,20 @@ export const handleChatTransferAction = async (payload: TransferActionPayload) =
 
   const removeInvitingAgent = payload?.options?.mode === 'COLD';
   const transferChatAPIPayload = await buildInviteParticipantAPIPayload(task, targetSid, removeInvitingAgent);
-
+  // console.log(transferChatAPIPayload);
   if (!transferChatAPIPayload) {
+    console.log("Passing")
+
     Notifications.showNotification(NotificationIds.ChatTransferFailedGeneric);
     return;
   }
 
-  if ((transferChatAPIPayload.workersToIgnore as any).workerSidsInConversation.indexOf(targetSid) >= 0) {
-    Notifications.showNotification(NotificationIds.ChatTransferFailedAlreadyParticipating);
-    return;
-  }
-
+  // if ((transferChatAPIPayload.workersToIgnore as any).workerSidsInConversation.indexOf(targetSid) >= 0) {
+  //   Notifications.showNotification(NotificationIds.ChatTransferFailedAlreadyParticipating);
+  //   return;
+  // }
   try {
     await ChatTransferService.sendTransferChatAPIRequest(transferChatAPIPayload);
-
     if (removeInvitingAgent) {
       Notifications.showNotification(NotificationIds.ChatTransferTaskSuccess);
     } else {

@@ -1,7 +1,7 @@
 {
-  "name": "flex-plugin-library-chat-transfer",
-  "version": "2.0.0",
-  "id": "flex-plugin-library-chat-transfer",
+  "name": "plibo-chat-transfer",
+  "version": "1.0.1-test",
+  "id": "plibo-chat-transfer",
   "private": true,
   "scripts": {
     "prebuild": "rimraf build && npm run bootstrap",

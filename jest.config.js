@@ -25,7 +25,7 @@ module.exports = {
     '/functions/setup.js',
     '/functions/conversation-transfer',
     '/helpers',
-    'ui-src/src/ConversationTransferPlugins.tsx',
+    'ui-src/src/ConversationTransferPlugin.tsx',
     'ui-src/src/index.ts',
   ],
   coverageReporters: ['json', 'lcov', 'text', 'clover', 'cobertura'],

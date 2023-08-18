@@ -23,25 +23,19 @@ jest.mock('@twilio-paste/icons/esm/ChatIcon', () => {
   const icons4 = <div />
 });
 
-jest.mock('@twilio/flex-ui', () => {
-    return {
-      __esModule: true,
+
+
+  describe('add transfer button', () => {
+    // const manager: Flex.Manager = Flex.Manager.getInstance();
+    const flex={
       TaskCanvasTabs: {
         Content: {
           add: jest.fn(),
         },
-      },
-      Manager: {
-        getInstance: jest.fn(),
       }
     };
-  });
-
-  describe('add transfer button', () => {
-    // const manager: Flex.Manager = Flex.Manager.getInstance();
-    let flex;
     it('add conversation transfer button to taskcanvasheader', async () => {
-      const addContentSpy = jest.spyOn(TaskCanvasTabs.Content, 'add');
+      const addContentSpy = jest.spyOn(flex.TaskCanvasTabs.Content, 'add');
       addParticipantsTab(flex);
       await expect(addContentSpy).toHaveBeenCalledTimes(1);
     });

@@ -1,6 +1,6 @@
 import * as Flex from '@twilio/flex-ui';
 import { Tab, TaskHelper } from '@twilio/flex-ui';
-
+import React from 'react';
 import { ParticipantTabLabel } from '../../components/ParticipantTabLabel';
 import ParticipantsTab from '../../components/ParticipantsTab';
 import { FlexComponent } from '../types/FlexComponent';

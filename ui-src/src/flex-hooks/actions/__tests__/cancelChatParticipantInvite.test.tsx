@@ -11,12 +11,13 @@ jest.mock('@twilio/flex-ui', () => ({
     showNotification: jest.fn(),
   },
   Manager: {
-    getInstance: jest.fn(),
+    getInstance: jest.fn().mockReturnValue({
+      serviceConfiguration: {
+        flex_service_instance_sid: jest.fn(),
+      },
+    }),
     configuration: jest.fn(),
-    serviceConfiguration: {
-      flex_service_instance_sid: jest.fn(),
-    }
-  }
+  },
 }));
 
 describe('handleCancelChatParticipantInvite', () => {
@@ -25,7 +26,9 @@ describe('handleCancelChatParticipantInvite', () => {
       conversation: {
         source: {
           sid: 'conversationSid',
-          attributes: { /* attributes here */ },
+          attributes: {
+            /* attributes here */
+          },
         },
       },
       invitesTaskSid: 'invitesTaskSid',
@@ -40,7 +43,11 @@ describe('handleCancelChatParticipantInvite', () => {
     await handleCancelChatParticipantInvite(payload);
 
     expect(TaskService.updateTaskAssignmentStatus).toHaveBeenCalledWith('invitesTaskSid', 'canceled');
-    expect(removeInvitedParticipant).toHaveBeenCalledWith('conversationSid', payload.conversation.source.attributes, 'invitesTaskSid');
+    expect(removeInvitedParticipant).toHaveBeenCalledWith(
+      'conversationSid',
+      payload.conversation.source.attributes,
+      'invitesTaskSid',
+    );
     expect(Notifications.showNotification).toHaveBeenCalledWith('ChatCancelParticipantInviteSuccess');
   });
 
@@ -49,7 +56,9 @@ describe('handleCancelChatParticipantInvite', () => {
       conversation: {
         source: {
           sid: 'conversationSid',
-          attributes: { /* attributes here */ },
+          attributes: {
+            /* attributes here */
+          },
         },
       },
       invitesTaskSid: 'invitesTaskSid',

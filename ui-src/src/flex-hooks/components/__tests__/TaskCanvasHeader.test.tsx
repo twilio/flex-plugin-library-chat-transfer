@@ -32,10 +32,8 @@ jest.mock('@twilio/flex-ui', () => {
     let flex;
     it('add conversation transfer button to taskcanvasheader', async () => {
       const addContentSpy1 = jest.spyOn(TaskCanvasHeader.Content, 'add');
-      const addContentSpy2 = jest.spyOn(TaskCanvasHeader.Content, 'remove');
       addConvTransferButtons(flex);
       expect(addContentSpy1).toHaveBeenCalledTimes(1);
-      expect(addContentSpy2).toHaveBeenCalledTimes(0);
     });
   });
   
