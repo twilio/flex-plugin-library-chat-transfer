@@ -112,11 +112,7 @@ class TaskRouterService extends ApiService {
     }
   }
 
-  async updateTaskAttributes(
-    taskSid: string,
-    attributesUpdate: object,
-    deferUpdates: boolean = false,
-  ): Promise<boolean> {
+  async updateTaskAttributes(taskSid: string, attributesUpdate: object, deferUpdates = false): Promise<boolean> {
     if (deferUpdates) {
       // Defer update; merge new attrs into local storage
       this.addToLocalStorage(taskSid, attributesUpdate);
@@ -184,7 +180,7 @@ class TaskRouterService extends ApiService {
     };
 
     return this.fetchJsonWithReject<UpdateTaskAttributesResponse>(
-      `${this.serverlessProtocol}://${this.serverlessDomain}/taskrouter/update-task-assignment-status`,
+      `${this.serverlessDomain}/taskrouter/update-task-assignment-status`,
       {
         method: 'post',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -205,7 +201,7 @@ class TaskRouterService extends ApiService {
     };
 
     return this.fetchJsonWithReject<UpdateTaskAttributesResponse>(
-      `${this.serverlessProtocol}://${this.serverlessDomain}/taskrouter/update-task-attributes`,
+      `${this.serverlessDomain}/taskrouter/update-task-attributes`,
       {
         method: 'post',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -223,14 +219,11 @@ class TaskRouterService extends ApiService {
       Token: encodeURIComponent(this.manager.user.token),
     };
 
-    return this.fetchJsonWithReject<GetQueuesResponse>(
-      `${this.serverlessProtocol}://${this.serverlessDomain}/common/flex/taskrouter/get-queues`,
-      {
-        method: 'post',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: this.buildBody(encodedParams),
-      },
-    ).then((response): GetQueuesResponse => {
+    return this.fetchJsonWithReject<GetQueuesResponse>(`${this.serverlessDomain}/common/flex/taskrouter/get-queues`, {
+      method: 'post',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: this.buildBody(encodedParams),
+    }).then((response): GetQueuesResponse => {
       return response;
     });
   };
@@ -242,7 +235,7 @@ class TaskRouterService extends ApiService {
     };
 
     return this.fetchJsonWithReject<GetWorkerChannelsResponse>(
-      `${this.serverlessProtocol}://${this.serverlessDomain}/taskrouter/get-worker-channels`,
+      `${this.serverlessDomain}/taskrouter/get-worker-channels`,
       {
         method: 'post',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -268,7 +261,7 @@ class TaskRouterService extends ApiService {
     };
 
     return this.fetchJsonWithReject<UpdateWorkerChannelResponse>(
-      `${this.serverlessProtocol}://${this.serverlessDomain}/taskrouter/update-worker-channel`,
+      `${this.serverlessDomain}/taskrouter/update-worker-channel`,
       {
         method: 'post',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
