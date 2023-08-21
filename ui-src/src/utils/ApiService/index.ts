@@ -27,10 +27,9 @@ export default abstract class ApiService {
     this.serverlessDomain = '';
     // this.serverlessDomain = process.env?.FLEX_APP_SERVERLESS_FUNCTONS_DOMAIN;
 
+    this.serverlessDomain = process.env.FLEX_APP_SERVERLESS_FUNCTONS_DOMAIN || '<FLEX_APP_SERVERLESS_FUNCTONS_DOMAIN>';
 
-    if (process.env?.FLEX_APP_SERVERLESS_FUNCTONS_DOMAIN)
-      this.serverlessDomain = process.env?.FLEX_APP_SERVERLESS_FUNCTONS_DOMAIN;
-
+    if (!this.serverlessDomain) throw Error('FLEX_APP_SERVERLESS_FUNCTONS_DOMAIN is not set');
     // if (custom_data?.serverless_functions_domain) this.serverlessDomain = custom_data.serverless_functions_domain;
 
     // if (custom_data?.serverless_functions_protocol) this.serverlessProtocol = custom_data.serverless_functions_protocol;
