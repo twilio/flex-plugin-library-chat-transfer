@@ -15,8 +15,8 @@ const retryHandler = require(Runtime.getFunctions()['twilio-wrappers/retry-handl
  */
 exports.updateTaskAttributes = async function updateTaskAttributes(parameters) {
   const { attempts, taskSid, attributesUpdate, context } = parameters;
-
-  if (!isNumber(attempts)) throw 'Invalid parameters object passed. Parameters must contain the number of attempts';
+  console.log(attempts);
+  // if (!isNumber(attempts)) throw 'Invalid parameters object passed. Parameters must contain the number of attempts';
   if (!isString(taskSid)) throw 'Invalid parameters object passed. Parameters must contain the taskSid string';
   if (!isString(attributesUpdate))
     throw 'Invalid parameters object passed. Parameters must contain attributesUpdate JSON string';

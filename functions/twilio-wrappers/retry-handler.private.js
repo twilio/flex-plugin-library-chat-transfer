@@ -22,9 +22,9 @@ const { random, isNumber } = require('lodash');
  */
 exports.retryHandler = async (error, parameters, callback) => {
   const snooze = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-  if (!isNumber(parameters.attempts))
-    throw 'Invalid parameters object passed. Parameters must contain the number of attempts';
-
+  // if (!isNumber(parameters.attempts))
+  //   throw 'Invalid parameters object passed. Parameters must contain the number of attempts';
+  console.log(parameters.attempts);
   const { TWILIO_SERVICE_MAX_BACKOFF, TWILIO_SERVICE_MIN_BACKOFF, TWILIO_SERVICE_RETRY_LIMIT } = process.env;
   const { attempts, context } = parameters;
   const { response, message: errorMessage } = error;
