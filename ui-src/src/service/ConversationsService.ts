@@ -27,7 +27,7 @@ class ConversationsService extends ApiService {
     };
 
     return this.fetchJsonWithReject<UpdateAttributesResponse>(
-      `${this.serverlessDomain}/conversation-transfer/update-attributes`,
+      `${this.serverlessProtocol}://${this.serverlessDomain}/conversation-transfer/update-attributes`,
       {
         method: 'post',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
