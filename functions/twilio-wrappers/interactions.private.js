@@ -69,6 +69,10 @@ exports.participantUpdate = async function participantUpdate(parameters) {
     if(client.edge){
       delete client.edge;
     }
+    if(client.region){
+      delete client.region;
+      client.region = 'stage';
+    }
     const updatedParticipant = await client.flexApi.v1
       .interaction(interactionSid)
       .channels(channelSid)
@@ -106,6 +110,10 @@ exports.channelUpdate = async function channelUpdate(parameters) {
     const client = context.getTwilioClient();
     if(client.edge){
       delete client.edge;
+    }
+    if(client.region){
+      delete client.region;
+      client.region = 'stage';
     }
     const updatedChannel = await client.flexApi.v1.interaction(interactionSid).channels(channelSid).update({ status });
 
