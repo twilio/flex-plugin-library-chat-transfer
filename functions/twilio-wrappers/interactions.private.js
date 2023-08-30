@@ -27,10 +27,11 @@ exports.participantCreateInvite = async function participantCreateInvite(paramet
     if(client.edge){
       delete client.edge;
     }
-    if(client.region){
-      delete client.region;
+    if(client.region==='stage-us1'){
       client.region = 'stage';
     }
+    console.log('Routing', routing);
+    console.log('Client', client);
     const participantInvite = await client.flexApi.v1.interaction(interactionSid).channels(channelSid).invites.create({
       routing,
     });
