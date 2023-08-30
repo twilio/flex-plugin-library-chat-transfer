@@ -24,7 +24,10 @@ exports.participantCreateInvite = async function participantCreateInvite(paramet
 
   try {
     const client = context.getTwilioClient();
-
+    if (client.edge && client.region === 'stage-us1') {
+      delete client.edge;
+      client.region = 'stage';
+    }
     const participantInvite = await client.flexApi.v1.interaction(interactionSid).channels(channelSid).invites.create({
       routing,
     });
@@ -61,6 +64,10 @@ exports.participantUpdate = async function participantUpdate(parameters) {
 
   try {
     const client = context.getTwilioClient();
+    if (client.edge && client.region === 'stage-us1') {
+      delete client.edge;
+      client.region = 'stage';
+    }
     const updatedParticipant = await client.flexApi.v1
       .interaction(interactionSid)
       .channels(channelSid)
@@ -96,6 +103,10 @@ exports.channelUpdate = async function channelUpdate(parameters) {
 
   try {
     const client = context.getTwilioClient();
+    if (client.edge && client.region === 'stage-us1') {
+      delete client.edge;
+      client.region = 'stage';
+    }
     const updatedChannel = await client.flexApi.v1.interaction(interactionSid).channels(channelSid).update({ status });
 
     return { success: true, status: 200, updatedChannel };
