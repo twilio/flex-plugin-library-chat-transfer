@@ -32,11 +32,14 @@ exports.participantCreateInvite = async function participantCreateInvite(paramet
     }
     console.log('Routing', routing);
     console.log('Client', client);
+    console.log('Clinet FlexAPI', client.flexApi);
+    console.log('Clinet FlexAPI v1', client.flexApi.v1);
     const participantInvite = await client.flexApi.v1.interaction(interactionSid).channels(channelSid).invites.create({
       routing,
     });
     return { success: true, status: 200, participantInvite };
   } catch (error) {
+    console.log('Error', error);
     return retryHandler(error, parameters, exports.participantCreateInvite);
   }
 };
