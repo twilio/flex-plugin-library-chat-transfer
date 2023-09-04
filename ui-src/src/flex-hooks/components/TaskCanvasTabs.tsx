@@ -4,6 +4,7 @@ import React from 'react';
 import { ParticipantTabLabel } from '../../components/ParticipantTabLabel';
 import ParticipantsTab from '../../components/ParticipantsTab';
 import { FlexComponent } from '../types/FlexComponent';
+import { isMultiParticipantEnabled } from '../../config';
 
 interface Props {
   task: Flex.ITask;
@@ -11,7 +12,7 @@ interface Props {
 
 export const componentName = FlexComponent.TaskCanvasTabs;
 export function addParticipantsTab(flex: typeof Flex) {
-  // if (!isMultiParticipantEnabled()) return;
+  if (!isMultiParticipantEnabled()) return;
 
   flex.TaskCanvasTabs.Content.add(
     <Tab label={ParticipantTabLabel()} key="participant-tab" uniqueName="ConversationTransferParticipants">

@@ -1,4 +1,5 @@
 import { NotificationType } from '@twilio/flex-ui';
+import * as Flex from '@twilio/flex-ui';
 
 import { StringTemplates } from '../strings/ChatTransferStrings';
 
@@ -16,82 +17,54 @@ export enum NotificationIds {
   ChatCancelParticipantInviteFailedInviteOutstanding = 'ChatCancelParticipantInviteFailedInviteOutstanding',
 }
 
-export const notificationHook = () => [
-  {
+export default (flex: typeof Flex) => {
+  flex.Notifications.registerNotification({
     id: NotificationIds.ChatTransferTaskSuccess,
     closeButton: true,
     content: StringTemplates.ChatTransferTaskSuccess,
+    type: NotificationType?.success,
     timeout: 3000,
-    type: NotificationType.success,
-  },
-  {
+  });
+  flex.Notifications.registerNotification({
     id: NotificationIds.ChatParticipantInvited,
     closeButton: true,
     content: StringTemplates.ChatParticipantInvited,
+    type: NotificationType?.success,
     timeout: 3000,
-    type: NotificationType.success,
-  },
-  {
+  });
+  flex.Notifications.registerNotification({
     id: NotificationIds.ChatTransferFailedGeneric,
     closeButton: true,
     content: StringTemplates.ChatTransferFailedGeneric,
+    type: NotificationType?.error,
     timeout: 3000,
-    type: NotificationType.error,
-  },
-  {
+  });
+  flex.Notifications.registerNotification({
     id: NotificationIds.ChatTransferFailedConsultNotSupported,
     closeButton: true,
     content: StringTemplates.ChatTransferFailedConsultNotSupported,
+    type: NotificationType?.warning,
     timeout: 3000,
-    type: NotificationType.error,
-  },
-  {
+  });
+  flex.Notifications.registerNotification({
     id: NotificationIds.ChatTransferFailedColdNotSupported,
     closeButton: true,
     content: StringTemplates.ChatTransferFailedColdNotSupported,
+    type: NotificationType?.warning,
     timeout: 3000,
-    type: NotificationType.error,
-  },
-  {
+  });
+  flex.Notifications.registerNotification({
     id: NotificationIds.ChatTransferFailedAlreadyParticipating,
     closeButton: true,
     content: StringTemplates.ChatTransferFailedAlreadyParticipating,
+    type: NotificationType?.error,
     timeout: 3000,
-    type: NotificationType.error,
-  },
-  {
+  });
+  flex.Notifications.registerNotification({
     id: NotificationIds.ChatRemoveParticipantFailed,
     closeButton: true,
     content: StringTemplates.ChatRemoveParticipantFailed,
+    type: NotificationType?.error,
     timeout: 3000,
-    type: NotificationType.error,
-  },
-  {
-    id: NotificationIds.ChatRemoveParticipantSuccess,
-    closeButton: true,
-    content: StringTemplates.ChatRemoveParticipantSuccess,
-    timeout: 3000,
-    type: NotificationType.success,
-  },
-  {
-    id: NotificationIds.ChatCancelParticipantInviteFailed,
-    closeButton: true,
-    content: StringTemplates.ChatCancelParticipantInviteFailed,
-    timeout: 3000,
-    type: NotificationType.error,
-  },
-  {
-    id: NotificationIds.ChatCancelParticipantInviteSuccess,
-    closeButton: true,
-    content: StringTemplates.ChatCancelParticipantInviteSuccess,
-    timeout: 3000,
-    type: NotificationType.success,
-  },
-  {
-    id: NotificationIds.ChatCancelParticipantInviteFailedInviteOutstanding,
-    closeButton: true,
-    content: StringTemplates.ChatParticipantInviteOutstanding,
-    timeout: 3000,
-    type: NotificationType.error,
-  },
-];
+  });
+};
