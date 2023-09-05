@@ -8,8 +8,8 @@ import zhHans from './zh-hans.json';
 export enum StringTemplates {
   ChatTransferTaskSuccess = 'ChatTransferTaskSuccess',
   ChatTransferFailedGeneric = 'ChatTransferFailedGeneric',
-  ChatTransferFailedConsultNotSupported = 'ChatTransferFailedConsultNotSupported',
-  ChatTransferFailedColdNotSupported = 'ChatTransferFailedColdNotSupported',
+  ChatTransferFailedConsultNotSupported = 'Multi Participant (Warm Transfer) is Disabled',
+  ChatTransferFailedColdNotSupported = 'Transfer Failed (Cold Transfer) is Disabled',
   ChatTransferFailedAlreadyParticipating = 'ChatTransferFailedAlreadyParticipating',
   ChatParticipantInvited = 'ChatParticipantInvited',
   ChatRemoveParticipantFailed = 'ChatRemoveParticipantFailed',

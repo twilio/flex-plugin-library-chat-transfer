@@ -31,9 +31,6 @@ describe('InvitedParticipant', () => {
         handleCancelInvite={mockHandleCancelInvite}
       />,
     );
-
     expect(wrapper).toMatchSnapshot();
   });
-
-  // Add more test cases for other invite target types if needed
 });

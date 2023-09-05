@@ -3,6 +3,14 @@ import { ITask, Notifications, StateHelper } from '@twilio/flex-ui';
 import ChatTransferService from '../../../helpers/APIHelper';
 import { countOfOutstandingInvitesForConversation } from '../../../helpers/inviteTracker';
 // Mocking dependencies
+
+jest.mock('../../../config', () => {
+  return {
+    isColdTransferEnabled: jest.fn().mockReturnValue(true),
+    isMultiParticipantEnabled: jest.fn().mockReturnValue(true),
+  }
+});
+
 jest.mock('@twilio/flex-ui', () => ({
   Notifications: {
     showNotification: jest.fn(),

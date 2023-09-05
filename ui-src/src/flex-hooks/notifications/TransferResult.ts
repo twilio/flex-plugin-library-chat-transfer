@@ -7,8 +7,8 @@ export enum NotificationIds {
   ChatTransferTaskSuccess = 'ChatTransferTaskSuccess',
   ChatParticipantInvited = 'ChatParticipantInvited',
   ChatTransferFailedGeneric = 'ChatTransferFailed',
-  ChatTransferFailedConsultNotSupported = 'ChatTransferFailedConsultNotSupported',
-  ChatTransferFailedColdNotSupported = 'ChatTransferFailedColdNotSupported',
+  ChatTransferFailedConsultNotSupported = 'Multi Participant (Warm Transfer) is Disabled',
+  ChatTransferFailedColdNotSupported = 'Transfer Failed (Cold Transfer) is Disabled',
   ChatTransferFailedAlreadyParticipating = 'ChatTransferFailedAlreadyParticipating',
   ChatRemoveParticipantFailed = 'ChatRemoveParticipantFailed',
   ChatRemoveParticipantSuccess = 'ChatRemoveParticipantSuccess',
@@ -18,6 +18,7 @@ export enum NotificationIds {
 }
 
 export default (flex: typeof Flex) => {
+  console.log('Register is getting called');
   flex.Notifications.registerNotification({
     id: NotificationIds.ChatTransferTaskSuccess,
     closeButton: true,

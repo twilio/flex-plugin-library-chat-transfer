@@ -5,6 +5,13 @@ import { registerLeaveChatAction } from '../../actions/leaveChat';
 import { registerRemoveChatParticipant } from '../../actions/removeChatParticipant';
 import { registerCancelChatParticipantInvite } from '../../actions/cancelChatParticipantInvite';
 
+jest.mock('../../../config', () => {
+  return {
+    isColdTransferEnabled: jest.fn().mockReturnValue(true),
+    isMultiParticipantEnabled: jest.fn().mockReturnValue(true),
+  }
+});
+
 jest.mock('../../actions/chatTransferTask', () => {
   return {
     registerCustomChatTransferAction: jest.fn(),

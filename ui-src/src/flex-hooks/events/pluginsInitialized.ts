@@ -4,6 +4,8 @@ import { registerRemoveChatParticipant } from '../actions/removeChatParticipant'
 import { registerCancelChatParticipantInvite } from '../actions/cancelChatParticipantInvite';
 import { FlexEvent } from '../types/FlexEvent';
 import { isColdTransferEnabled, isMultiParticipantEnabled } from '../../config';
+import ConversationTransferNotification from '../../flex-hooks/notifications/TransferResult';
+
 
 export const eventName = FlexEvent.pluginsInitialized;
 export const eventHook = () => {
@@ -15,6 +17,7 @@ export const eventHook = () => {
   // console.log(
   //   `Feature conversation-transfer settings: cold_transfer=${coldTransferEnabled} multi_participant=${multiParticipantEnabled}`,
   // );
+  ConversationTransferNotification;
   registerCustomChatTransferAction();
   registerLeaveChatAction();
   registerRemoveChatParticipant();

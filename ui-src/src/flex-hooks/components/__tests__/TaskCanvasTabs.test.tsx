@@ -6,7 +6,11 @@ import '@testing-library/jest-dom';
 import { TaskCanvasTabs } from '@twilio/flex-ui';
 import * as Flex from '@twilio/flex-ui';
 
-
+jest.mock('../../../config', () => {
+  return {
+    isMultiParticipantEnabled: jest.fn().mockReturnValue(true),
+  }
+});
 jest.mock('@twilio-paste/icons/esm/UserIcon', () => {
   const icons1 = <div />
 });

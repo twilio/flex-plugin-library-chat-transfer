@@ -12,6 +12,7 @@ import { registerCancelChatParticipantInvite } from './flex-hooks/actions/cancel
 import { registerCustomChatTransferAction } from './flex-hooks/actions/chatTransferTask';
 import { registerLeaveChatAction } from './flex-hooks/actions/leaveChat';
 import { registerRemoveChatParticipant } from './flex-hooks/actions/removeChatParticipant';
+import ConversationTransferNotification from './flex-hooks/notifications/TransferResult';
 
 import { addConvTransferButtons } from './flex-hooks/components/TaskCanvasHeader';
 import { addParticipantsTab } from './flex-hooks/components/TaskCanvasTabs';
@@ -34,6 +35,7 @@ export default class ConversationTransferPlugin extends FlexPlugin {
   init(flex: typeof Flex, manager: Flex.Manager) {
     const initializers = [
       ParticipantTabLabel,
+      ConversationTransferNotification,
       registerCancelChatParticipantInvite,
       registerCustomChatTransferAction,
       registerLeaveChatAction,

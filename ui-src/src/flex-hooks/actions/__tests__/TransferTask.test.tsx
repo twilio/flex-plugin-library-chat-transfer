@@ -6,14 +6,12 @@ import { Actions } from '@twilio/flex-ui';
 import { actionHook } from '../TransferTask'; // Update this import based on your file structure
 import * as Flex from '@twilio/flex-ui';
 
-// jest.mock('@twilio/flex-ui', () => {
-//   return {
-//     __esModule: true,
-//     Actions: {
-//       addListener: jest.fn(),
-//     },
-//   };
-// });
+jest.mock('../../../config', () => {
+  return {
+    isColdTransferEnabled: jest.fn().mockReturnValue(true),
+    isMultiParticipantEnabled: jest.fn().mockReturnValue(true),
+  }
+});
 
 describe('add transfer button', () => {
   let mockFlexActionsAddListener;

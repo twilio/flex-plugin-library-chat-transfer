@@ -1,5 +1,5 @@
 import { Actions, Notifications, StateHelper } from '@twilio/flex-ui';
-import * as Flex from '@twilio/flex-ui'; 
+import * as Flex from '@twilio/flex-ui';
 import { TransferActionPayload } from '../types/ActionPayloads';
 import { NotificationIds } from '../../flex-hooks/notifications/TransferResult';
 import ChatTransferService, { buildInviteParticipantAPIPayload } from '../../helpers/APIHelper';
@@ -11,15 +11,12 @@ export const handleChatTransferAction = async (payload: TransferActionPayload) =
   const conversation = StateHelper.getConversationStateForTask(task);
 
   if (conversation && countOfOutstandingInvitesForConversation(conversation) !== 0) {
-    Flex.Notifications.showNotification(NotificationIds.ChatCancelParticipantInviteFailedInviteOutstanding);
+    Notifications.showNotification(NotificationIds.ChatCancelParticipantInviteFailedInviteOutstanding);
     return;
   }
 
   if (payload?.options?.mode === 'WARM' && !isMultiParticipantEnabled()) {
-    console.log('Warm Transfer Disabled');
-    console.log(NotificationIds.ChatTransferFailedConsultNotSupported);
-    // Notifications.showNotification(NotificationIds.ChatTransferFailedConsultNotSupported);
-    Flex.Notifications.showNotification("Multi Participant is Disabled");
+    Notifications.showNotification(NotificationIds.ChatTransferFailedConsultNotSupported);
     return;
   }
 
@@ -36,10 +33,6 @@ export const handleChatTransferAction = async (payload: TransferActionPayload) =
     return;
   }
 
-  // if ((transferChatAPIPayload.workersToIgnore as any).workerSidsInConversation.indexOf(targetSid) >= 0) {
-  //   Notifications.showNotification(NotificationIds.ChatTransferFailedAlreadyParticipating);
-  //   return;
-  // }
   try {
     await ChatTransferService.sendTransferChatAPIRequest(transferChatAPIPayload);
     if (removeInvitingAgent) {

@@ -6,6 +6,13 @@ import { addConvTransferButtons } from '../TaskCanvasHeader';
 import '@testing-library/jest-dom';
 import { TaskCanvasHeader } from '@twilio/flex-ui';
 import * as Flex from '@twilio/flex-ui'
+
+jest.mock('../../../config', () => {
+  return {
+    isColdTransferEnabled: jest.fn().mockReturnValue(true),
+    isMultiParticipantEnabled: jest.fn().mockReturnValue(true),
+  }
+});
 jest.mock('@twilio/flex-ui', () => {
     return {
       __esModule: true,
