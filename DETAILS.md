@@ -1,8 +1,5 @@
 ## Details
 
-### Note
-This plugin is only compatible with 'Programmable Chat API' and not with 'Conversations API'.
-
 ### How it works
 Plugin is ready to use once it is installed and the browser window is refreshed.
 - A transfer button is added to the task canvas.
