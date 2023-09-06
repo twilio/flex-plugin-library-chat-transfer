@@ -219,7 +219,7 @@ class TaskRouterService extends ApiService {
       Token: encodeURIComponent(this.manager.user.token),
     };
 
-    return this.fetchJsonWithReject<GetQueuesResponse>(`${this.serverlessDomain}/common/flex/taskrouter/get-queues`, {
+    return this.fetchJsonWithReject<GetQueuesResponse>(`${this.serverlessDomain}/taskrouter/get-queues`, {
       method: 'post',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: this.buildBody(encodedParams),
