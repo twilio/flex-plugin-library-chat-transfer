@@ -45,3 +45,14 @@ exports.prepareFunction = (context, event, callback, requiredParameters, handler
 exports.prepareFlexFunction = (requiredParameters, handlerFn) => {
   return TokenValidator((context, event, callback) => module.exports.prepareFunction(context, event, callback, requiredParameters, handlerFn));
 };
+
+/**
+ * @param {object} object
+ * @returns {object}
+ * @description convenience method to safely extract the standad elements in the response back to flex from serverless functions.  This can be used with any object that is returrned from any twilio-wrapper function.
+ */
+exports.extractStandardResponse = (object) => {
+  const { success, message, twilioDocPage, twilioErrorCode } = object;
+  return { success, message, twilioDocPage, twilioErrorCode };
+};
+
