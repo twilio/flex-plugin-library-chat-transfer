@@ -27,7 +27,6 @@ module.exports = {
     '/helpers',
     'ui-src/src/ConversationTransferPlugin.tsx',
     'ui-src/src/index.ts',
-    'ui-src/src/config.tsx',
     'ui-src/src/flex-hooks/notifications/TransferResult.ts',
   ],
   coverageReporters: ['json', 'lcov', 'text', 'clover', 'cobertura'],

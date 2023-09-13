@@ -55,4 +55,3 @@ exports.extractStandardResponse = (object) => {
   const { success, message, twilioDocPage, twilioErrorCode } = object;
   return { success, message, twilioDocPage, twilioErrorCode };
 };
-

@@ -1,12 +1,11 @@
-// import PrepareFunction from '../../../serverless/src/functions/helpers/prepare-function.private';
 import helpers from '../test-utils/test-helper';
-
 describe('Prepare Flex Function', () => {
   const mockFucntionValidatorObject = jest.fn();
-  
+
   beforeAll(() => {
     helpers.setup();
     global.Runtime._addFunction('helpers/parameter-validator', './functions/helpers/parameter-validator.private.js');
+
     jest.mock('twilio-flex-token-validator', () => {
       return {
         functionValidator: mockFucntionValidatorObject,
