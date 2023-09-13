@@ -4,7 +4,6 @@ import { useState } from 'react';
 import React from 'react';
 
 import { LeaveChatActionPayload } from '../../flex-hooks/types/ActionPayloads';
-import { StringTemplates } from '../../flex-hooks/strings/ChatTransferStrings';
 
 export interface LeaveChatButtonProps {
   conversation: ConversationState.ConversationState;
@@ -29,7 +28,7 @@ const LeaveChatButton = ({ conversation }: LeaveChatButtonProps) => {
       disabled={buttonDisabled}
       title="ConvTransferLeaveChat"
     >
-      {/* <Template source={templates[StringTemplates.LeaveChat]} /> */}
+      {' '}
     </Button>
   );
 };
