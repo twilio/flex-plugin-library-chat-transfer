@@ -11,7 +11,7 @@ describe('Analytics', () => {
     flexUiVersion: '2.1.1',
     originalPluginName: 'plibo-chat-transfer',
     plugin: 'plibo-chat-transfer',
-    pluginVersion: '1.0.1-test',
+    pluginVersion: '2.0.0',
     product: 'Flex',
     workerSid: '',
   };

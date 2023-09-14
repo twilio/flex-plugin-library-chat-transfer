@@ -35,7 +35,7 @@ export default class ConversationTransferPlugin extends FlexPlugin {
   init(flex: typeof Flex, manager: Flex.Manager) {
     const initializers = [
       ParticipantTabLabel,
-      // ConversationTransferNotification,
+      ConversationTransferNotification,
       registerCancelChatParticipantInvite,
       registerCustomChatTransferAction,
       registerLeaveChatAction,
