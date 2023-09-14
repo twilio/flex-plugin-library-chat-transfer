@@ -5,9 +5,11 @@ import { NotificationIds } from '../../flex-hooks/notifications/TransferResult';
 import ChatTransferService, { buildInviteParticipantAPIPayload } from '../../helpers/APIHelper';
 import { countOfOutstandingInvitesForConversation } from '../../helpers/inviteTracker';
 import { isColdTransferEnabled, isMultiParticipantEnabled } from '../../config';
+import Analytics, { Event } from '../../utils/Analytics';
 
 export const handleChatTransferAction = async (payload: TransferActionPayload) => {
   const { task, targetSid } = payload;
+  const isWorkerSid = targetSid.startsWith('WK');
   const conversation = StateHelper.getConversationStateForTask(task);
 
   if (conversation && countOfOutstandingInvitesForConversation(conversation) !== 0) {
@@ -37,8 +39,14 @@ export const handleChatTransferAction = async (payload: TransferActionPayload) =
     await ChatTransferService.sendTransferChatAPIRequest(transferChatAPIPayload);
     if (removeInvitingAgent) {
       Flex.Notifications.showNotification(NotificationIds.ChatTransferTaskSuccess);
+      Analytics.track(Event.CHAT_TRANSFERRED_COLD, {
+        [isWorkerSid ? 'toAgentSid' : 'toQueueSid']: payload.targetSid,
+      });
     } else {
       Flex.Notifications.showNotification(NotificationIds.ChatParticipantInvited);
+      Analytics.track(Event.CHAT_TRANSFERRED_WARM, {
+        [isWorkerSid ? 'toAgentSid' : 'toQueueSid']: payload.targetSid,
+      });
     }
   } catch (error) {
     console.error('transfer API request failed', error);
