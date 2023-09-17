@@ -1,9 +1,7 @@
 import { Stack, Card, Heading } from '@twilio-paste/core';
-import { Template, templates } from '@twilio/flex-ui';
 
 import { Participant } from './Participant/Participant';
 import { ParticipantDetails } from '../../../flex-hooks/types/ParticipantDetails';
-import { StringTemplates } from '../../../flex-hooks/strings/ChatTransferStrings';
 import React from 'react';
 interface ParticipantsProps {
   participantDetails: ParticipantDetails[];
@@ -31,9 +29,7 @@ export const Participants = ({ participantDetails, handleKickParticipant }: Part
 
   return (
     <Card padding="space60">
-      <Heading as="h2" variant="heading20">
-        {/* <Template source={templates[StringTemplates.Participants]} /> */}
-      </Heading>
+      <Heading as="h2" variant="heading20"> </Heading>
       <Stack orientation="vertical" spacing="space20">
         {participants}
       </Stack>

@@ -1,7 +1,6 @@
 import * as Flex from '@twilio/flex-ui';
 import { Manager } from '@twilio/flex-ui';
 import { EncodedParams } from '../../types/Params';
-// import { getFeatureFlags } from '../configuration';
 
 const MAX_ATTEMPTS = 10;
 const MAX_RETRY_DELAY = 3000;
@@ -19,25 +18,14 @@ export default abstract class ApiService {
   protected manager = Manager.getInstance();
 
   constructor() {
-    // const custom_data = getFeatureFlags() || {};
-
-    // use serverless_functions_domain from ui_attributes, or .env or set as undefined
 
     this.serverlessProtocol = 'https';
     this.serverlessDomain = '';
-    // this.serverlessDomain = process.env?.FLEX_APP_SERVERLESS_FUNCTONS_DOMAIN;
 
     this.serverlessDomain = process.env.FLEX_APP_SERVERLESS_FUNCTONS_DOMAIN || '<FLEX_APP_SERVERLESS_FUNCTONS_DOMAIN>';
 
     if (!this.serverlessDomain) throw Error('FLEX_APP_SERVERLESS_FUNCTONS_DOMAIN is not set');
-    // if (custom_data?.serverless_functions_domain) this.serverlessDomain = custom_data.serverless_functions_domain;
-
-    // if (custom_data?.serverless_functions_protocol) this.serverlessProtocol = custom_data.serverless_functions_protocol;
-
-    // if (custom_data?.serverless_functions_port) this.serverlessDomain += `:${custom_data.serverless_functions_port}`;
-
-    // if (!this.serverlessDomain) console.error('serverless_functions_domain is not set in flex config or env file');
-  }
+   }
 
   protected buildBody(encodedParams: EncodedParams): string {
     return Object.keys(encodedParams).reduce((result, paramName, idx) => {

@@ -2,7 +2,6 @@ import * as Flex from '@twilio/flex-ui';
 import { merge } from 'lodash';
 import { UIAttributes } from 'types/manager/ServiceConfiguration';
 import { CustomWorkerAttributes } from 'types/task-router/Worker';
-// import { Manager } from '@twilio/flex-ui';
 
 const manager = Flex.Manager.getInstance();
 const { custom_data: globalSettings } = manager.configuration as UIAttributes;

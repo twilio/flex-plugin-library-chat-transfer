@@ -1,4 +1,4 @@
-import { Button, ConversationState, Actions, Template, templates } from '@twilio/flex-ui';
+import { Button, ConversationState, Actions } from '@twilio/flex-ui';
 import { useState } from 'react';
 
 import React from 'react';

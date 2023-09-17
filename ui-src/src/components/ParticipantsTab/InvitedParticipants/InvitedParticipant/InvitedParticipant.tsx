@@ -3,11 +3,9 @@ import { ChatIcon } from '@twilio-paste/icons/cjs/ChatIcon';
 import { AgentIcon } from '@twilio-paste/icons/cjs/AgentIcon';
 import { CloseIcon } from '@twilio-paste/icons/cjs/CloseIcon';
 import { useState } from 'react';
-import { templates } from '@twilio/flex-ui';
 import React from 'react';
 
 import { ParticipantInviteType } from '../../../../flex-hooks/types/ParticipantInvite';
-import { StringTemplates } from '../../../../flex-hooks/strings/ChatTransferStrings';
 
 interface InvitedParticipantProps {
   participantName: string;

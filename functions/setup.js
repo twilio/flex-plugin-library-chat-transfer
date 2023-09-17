@@ -11,7 +11,6 @@ const {
 async function loadPluginData(pluginName, replacementMap) {
   return ['.js', '.js.LICENSE.txt', '.js.map'].map((suffix) => {
     const filename = pluginName + suffix;
-    console.log(filename);
     let content = Runtime.getAssets()['/' + filename].open();
     if (content) {
       Object.entries(replacementMap).forEach(([key, value]) => {

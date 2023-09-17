@@ -13,10 +13,6 @@ export const eventHook = () => {
   const multiParticipantEnabled = isMultiParticipantEnabled();
 
   if (!(coldTransferEnabled || multiParticipantEnabled)) return;
-
-  // console.log(
-  //   `Feature conversation-transfer settings: cold_transfer=${coldTransferEnabled} multi_participant=${multiParticipantEnabled}`,
-  // );
   ConversationTransferNotification;
   registerCustomChatTransferAction();
   registerLeaveChatAction();

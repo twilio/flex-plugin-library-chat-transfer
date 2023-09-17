@@ -3,12 +3,10 @@ import { UserIcon } from '@twilio-paste/icons/cjs/UserIcon';
 import { AgentIcon } from '@twilio-paste/icons/cjs/AgentIcon';
 import { CloseIcon } from '@twilio-paste/icons/cjs/CloseIcon';
 import { useState } from 'react';
-import { templates } from '@twilio/flex-ui';
 import React from 'react';
 
 
 import { ParticipantType } from '../../../../flex-hooks/types/ParticipantDetails';
-import { StringTemplates } from '../../../../flex-hooks/strings/ChatTransferStrings';
 
 interface ParticipantProps {
   name: string;

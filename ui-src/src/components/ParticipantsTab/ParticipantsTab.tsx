@@ -20,15 +20,6 @@ const ParticipantsTabContainer = styled('div')`
   width: 100%;
   overflow-y: scroll;
 `;
-// const classNames = {
-//   ParticipantsTabContainerStyle: {
-//     paddingLeft: '3%',
-//     paddingRight: '3%',
-//     paddingTop: '3%',
-//     width: '100%',
-//     overflowY: 'scroll',
-//   },
-// };
 interface ParticipantsTabProps {
   task: Flex.ITask;
   conversation: ConversationState.ConversationState;
