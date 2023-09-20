@@ -1,7 +1,7 @@
 ## Details
 
 #### Please Note
-Version 2 of this plugin is based on [Flex Conversations](https://console.stage.twilio.com/us1/develop/taskrouter/workspaces). It is not backwards compatible with the previous version which was based on Programmable Chat, which has been deprecated.
+Version 2 of this plugin is based on [Flex Conversations](https://console.twilio.com/us1/develop/taskrouter/workspaces). It is not backwards compatible with the previous version which was based on Programmable Chat, which has been deprecated.
 
 ### How it works
 Plugin is ready to use once it is installed and the browser window is refreshed.
