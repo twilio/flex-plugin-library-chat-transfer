@@ -1,6 +1,6 @@
 import * as Flex from '@twilio/flex-ui';
-import React from 'react';
 import { CustomizationProvider, PasteCustomCSS, CustomizationProviderProps } from '@twilio-paste/core/customization';
+import React from 'react';
 
 export default (flex: typeof Flex, manager: Flex.Manager) => {
   flex.setProviders({

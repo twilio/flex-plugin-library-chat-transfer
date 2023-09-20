@@ -1,6 +1,6 @@
 import * as Flex from '@twilio/flex-ui';
 import packageJSON from '../../package.json';
-import { ChatTransferNotification } from '../flex-hooks/notifications/ChatTransfer';
+import { NotificationIds } from '../flex-hooks/notifications/TransferResult';
 
 const flexManager = window?.Twilio?.Flex?.Manager?.getInstance();
 
@@ -35,7 +35,7 @@ export class FlexPluginError extends Error {
     super(message);
     this.content = {
       ...content,
-      type: content.type ?? 'ChatTransfer',
+      type: content.type ?? 'ConferencePlugin',
       severity: content.severity ?? FlexErrorSeverity.normal,
     };
     this.time = new Date();
@@ -46,7 +46,7 @@ export class FlexPluginError extends Error {
 class ErrorManagerImpl {
   public processError(error: FlexPluginError, showNotification: boolean): FlexPluginError {
     try {
-      console.log(`Chat Transfer Plugin: ${error}\nType: ${error.content.type}\nContext:${error.content.context}`);
+      console.log(`Conference Plugin: ${error}\nType: ${error.content.type}\nContext:${error.content.context}`);
       const pluginError = new Flex.FlexError(error.message, {
         plugin: { name: packageJSON.id, version: packageJSON.version },
         description: error.content.description,
@@ -54,9 +54,8 @@ class ErrorManagerImpl {
       if (flexManager?.reportErrorEvent) {
         flexManager.reportErrorEvent(pluginError);
       }
-
       if (showNotification) {
-        Flex.Notifications.showNotification(ChatTransferNotification.ErrorTransferringChat, {
+        Flex.Notifications.showNotification(NotificationIds.ChatTransferFailedGeneric, {
           error: error,
         });
       }

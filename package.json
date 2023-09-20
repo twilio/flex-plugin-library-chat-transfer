@@ -1,10 +1,10 @@
 {
-  "name": "flex-plugin-library-chat-transfer",
-  "version": "1.0.0",
+  "name": "plibo-chat-transfer",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "test": "jest",
-    "test:coverage": "npm run test -- --coverage",
+    "test:coverage": "jest --coverage",
     "lint": "eslint --ext ts --ext tsx ui-src/src/",
     "lint:fix": "npm run lint -- --fix",
     "makeassetsprivate": "cd ui-src/build && sh ../../scripts/makeAssetsPrivate.sh",
@@ -15,9 +15,11 @@
     "@twilio-labs/runtime-helpers": "^0.1.2",
     "@twilio-labs/serverless-runtime-types": "^2.2.3",
     "@twilio-labs/serverless-api": "^5.5.0",
-    "twilio-flex-token-validator": "^1.5.8",
     "lodash": "^4.17.21",
-    "twilio": "^4.0.0"
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "twilio": "^4.0.0",
+    "twilio-flex-token-validator": "1.5.8"
   },
   "devDependencies": {
     "@babel/preset-env": "7.20.2",
@@ -33,10 +35,9 @@
     "jest": "^26.0.20",
     "jest-fetch-mock": "3.0.3",
     "jest-junit": "12.0.0",
+    "twilio": "4.0.0",
     "twilio-cli": "5.2.1",
     "twilio-run": "3.4.2",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
     "@typescript-eslint/eslint-plugin": "^5.52.0",
     "@typescript-eslint/parser": "^5.52.0",
     "eslint": "^8.34.0",
@@ -45,6 +46,6 @@
     "husky": "^8.0.0"
   },
   "engines": {
-    "node": "16"
+    "node": "14"
   }
 }

@@ -127,6 +127,11 @@ module.exports = {
       remove: jest.fn(),
     },
   },
+  TaskCanvasTabs: {
+    Content: {
+      add: jest.fn(),
+    },
+  },
   CallCanvasActions: {
     Content: {
       add: jest.fn(),
@@ -238,6 +243,9 @@ module.exports = {
         return <WrappedComponent />;
       },
     });
+  },
+  TaskContext: {
+    Consumer: React.Fragment,
   },
   withTheme: (WrappedComponent) => {
     return () => ({
