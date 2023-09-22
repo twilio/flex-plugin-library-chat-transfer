@@ -17,7 +17,7 @@ During installation, 4 fields are required:
 
  1. *TaskRouter Workspace SID*: This is the SID of the "Flex Task Assignment" workspace that you see in [Twilio Console > TaskRouter > Workspaces](https://console.twilio.com/us1/develop/taskrouter/workspaces)
 
- 2. *TaskRouter Chat Transfer Workflow SID*: You may want to create a new [TaskRouter Workflow](#taskrouter-workflow) for chat transfer or use the default workflow in [Twilio Console > TaskRouter > Workspaces > Flex Task Assignment](https://console.twilio.com/us1/develop/taskrouter/workspaces) > Workflows > Assign to Anyone and get its SID.
+ 2. *TaskRouter Chat Transfer Workflow SID*: You may want to create a new TaskRouter workflow (Refer **TaskRouter Workflow** section below) for chat transfer or use the default workflow in [Twilio Console > TaskRouter > Workspaces > Flex Task Assignment](https://console.twilio.com/us1/develop/taskrouter/workspaces) > Workflows > Assign to Anyone and get its SID.
 
  3. *Cold Transfer*: Enables a *transfer* icon for the task header that can be used to implement cold/blind transfer. Enter *Enable* or *Disable* in the text box.
 
