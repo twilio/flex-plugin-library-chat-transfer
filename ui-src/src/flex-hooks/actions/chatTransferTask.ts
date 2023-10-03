@@ -5,7 +5,7 @@ import { NotificationIds } from '../../flex-hooks/notifications/TransferResult';
 import ChatTransferService, { buildInviteParticipantAPIPayload } from '../../helpers/APIHelper';
 import { countOfOutstandingInvitesForConversation } from '../../helpers/inviteTracker';
 import { isColdTransferEnabled, isMultiParticipantEnabled } from '../../config';
-import Analytics, { Event } from '../../utils/Analytics';
+import { Analytics, Event } from '../../utils/Analytics';
 
 export const handleChatTransferAction = async (payload: TransferActionPayload) => {
   const { task, targetSid } = payload;
