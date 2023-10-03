@@ -1,6 +1,6 @@
 {
   "name": "plibo-chat-transfer",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "private": true,
   "scripts": {
     "test": "jest",
