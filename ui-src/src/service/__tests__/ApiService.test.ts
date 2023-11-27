@@ -1,5 +1,5 @@
-import ApiService from '../ApiService';
 import * as Flex from '@twilio/flex-ui';
+import ApiService from '../ApiService';
 import { EncodedParams } from '../../types/Params';
 import fetch from 'jest-fetch-mock';
 
@@ -26,12 +26,6 @@ describe('utils/common/ApiService', () => {
   it('should provide access to the Flex Manager instance', () => {
     expect(TestService.testHasManagerClassMember()).toBe(true);
   });
-
-  // it('should provide access to the configured serverless domain', () => {
-  //   const { serviceConfiguration: { ui_attributes } } = Flex.Manager.getInstance();
-  //   const { serverless_functions_domain } = ui_attributes as UIAttributes;
-  //   expect(TestService.serverlessDomain).toBe(serverless_functions_domain);
-  // });
 
   it('should build encoded params into a string to use as the body for serverless reqeusts', () => {
     const encodedParams: EncodedParams = {
@@ -67,14 +61,14 @@ describe('utils/common/ApiService', () => {
       fetch.resetMocks();
     });
 
-    // it('should retry on error', async () => {
-    //   fetch.mockReject({ status: 429 });
-    //   const fetchSpy = jest.spyOn(ApiService.prototype, 'fetchJsonWithReject');
-    //   try {
-    //     await TestService.testFetchJsonWithReject('mockURL', {}, 0);
-    //   } catch (e) {
-    //     expect(fetchSpy).toHaveBeenCalledTimes(11);
-    //   }
-    // });
+    it('should retry on error', async () => {
+      fetch.mockReject({ status: 429 });
+      const fetchSpy = jest.spyOn(ApiService.prototype, 'fetchJsonWithReject');
+      try {
+        await TestService.testFetchJsonWithReject('mockURL', {}, 0);
+      } catch (e) {
+        expect(fetchSpy).toHaveBeenCalledTimes(4);
+      }
+    });
   });
 });
