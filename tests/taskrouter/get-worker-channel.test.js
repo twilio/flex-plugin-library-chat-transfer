@@ -1,68 +1,45 @@
 import helpers from '../test-utils/test-helper';
 
-jest.mock(
-  '../../functions/helpers/prepare-function.private.js',
-  () => ({
-    __esModule: true,
-    prepareFlexFunction: (_, fn) => fn,
-  }),
-);
+jest.mock('../../functions/helpers/prepare-function.private.js', () => ({
+  __esModule: true,
+  prepareFlexFunction: (_, fn) => fn,
+}));
+jest.mock('@twilio/flex-plugins-library-utils', () => ({
+  __esModule: true,
+  TaskRouterUtils: jest.fn(),
+}));
+
+import { TaskRouterUtils } from '@twilio/flex-plugins-library-utils';
 
 const mockChannelSid = 'CSxxxxx';
-describe('Update task attributes', () => {
-  const updateTaskAttributesTwilioClient = function (updateTaskAttributes) {
-    const getWorkspace = (workspaceSid) => ({
-        sid: workspaceSid,
-        workers:(_workerSid)=>({
-          sid:_workerSid,
-          workerChannels: {
-            list: updateTaskAttributes,
-          },
-        })
-      });
-
-    const mockTaskRouterService = {
-        workspaces:getWorkspace
-    };
-    return {
-        taskrouter: mockTaskRouterService,
-    };
-  };
-
-  const updateTaskAttributes = jest.fn(() =>
-   Promise.resolve({
-    }
-   )
-  );
-
+describe('get-worker-channel', () => {
   beforeAll(() => {
     helpers.setup();
     global.Runtime._addFunction('helpers/prepare-function', './functions/helpers/prepare-function.private.js');
     global.Runtime._addFunction('helpers/parameter-validator', './functions/helpers/parameter-validator.private.js');
-    global.Runtime._addFunction(
-      'twilio-wrappers/programmable-voice',
-      './functions/twilio-wrappers/programmable-chat.private.js',
-    );
-    global.Runtime._addFunction(
-      'twilio-wrappers/retry-handler',
-      './functions/twilio-wrappers/retry-handler.private.js',
-    );
-    global.Runtime._addFunction(
-      'twilio-wrappers/taskrouter',
-      './functions/twilio-wrappers/taskrouter.private.js',
-    );
+    global.Runtime._addFunction('twilio-wrappers/taskrouter', './functions/twilio-wrappers/taskrouter.private.js');
   });
 
-  it('getQueues is called successfully ', async () => {
-    const UpdateTaskAttributes = require('../../functions/taskrouter/get-worker-channels');
-    const handlerFn = UpdateTaskAttributes.handler;
+  it('get-worker-channel is called successfully ', async () => {
+    TaskRouterUtils.mockImplementation((value) => {
+      return {
+        getWorkerChannels: jest.fn(() =>
+          Promise.resolve({
+            status: 200,
+            workerChannels: {},
+            success: true,
+          }),
+        ),
+      };
+    });
+    const getWorkerChannel = require('../../functions/taskrouter/get-worker-channels');
+    const handlerFn = getWorkerChannel.handler;
     const mockContext = {
-      PATH: 'mockPath',
-      getTwilioClient: () => updateTaskAttributesTwilioClient(updateTaskAttributes),
+      getTwilioClient: () => () => jest.fn(),
     };
     const mockEvent = {
-        taskSid: 'CHxxxxx',
-        attributesUpdate: 'AUxxxx'
+      taskSid: 'CHxxxxx',
+      attributesUpdate: 'AUxxxx',
     };
 
     const mockResponse = new Twilio.Response();
@@ -77,8 +54,19 @@ describe('Update task attributes', () => {
   });
 
   it('get-worker-channel error handler is called', async () => {
-    const UpdateTaskAttributes = require('../../functions/taskrouter/get-worker-channels');
-    const handlerFn = UpdateTaskAttributes.handler;
+    TaskRouterUtils.mockImplementation((value) => {
+      return {
+        getWorkerChannels: jest.fn(() =>
+          Promise.reject({
+            success: false,
+            status: 400,
+            message: 'Mock Error Message',
+          }),
+        ),
+      };
+    });
+    const getWorkerChannel = require('../../functions/taskrouter/get-worker-channels');
+    const handlerFn = getWorkerChannel.handler;
     const mockResponse = new Twilio.Response();
     const mockCallbackObject = jest.fn();
 

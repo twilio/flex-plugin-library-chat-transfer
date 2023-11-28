@@ -1,6 +1,4 @@
-const { merge, isString, isObject, omitBy, isNil } = require('lodash');
-
-const retryHandler = require(Runtime.getFunctions()['twilio-wrappers/retry-handler'].path).retryHandler;
+const { TaskRouterUtils } = require('@twilio/flex-plugins-library-utils');
 
 /**
  * @param {object} parameters the parameters for the function
@@ -14,55 +12,34 @@ const retryHandler = require(Runtime.getFunctions()['twilio-wrappers/retry-handl
  * more explained here https://www.twilio.com/docs/taskrouter/api/task#task-version
  */
 exports.updateTaskAttributes = async function updateTaskAttributes(parameters) {
-  const { attempts, taskSid, attributesUpdate, context } = parameters;
-  if (!isString(taskSid)) throw 'Invalid parameters object passed. Parameters must contain the taskSid string';
-  if (!isString(attributesUpdate))
-    throw 'Invalid parameters object passed. Parameters must contain attributesUpdate JSON string';
+  const { context, attempts, taskSid, attributesUpdate } = parameters;
+  const region = context.TWILIO_REGION ? context.TWILIO_REGION.split('-')[0] : '';
+  const config = {
+    attempts: attempts || 3,
+    taskSid,
+    attributesUpdate,
+    workspaceSid: context.TWILIO_FLEX_WORKSPACE_SID,
+    accountSid: context.ACCOUNT_SID,
+    authToken: context.AUTH_TOKEN,
+    region,
+  };
+
+  const client = context.getTwilioClient();
+  const taskRouterClient = new TaskRouterUtils(client, config);
 
   try {
-    const axios = require('axios');
-
-    const region = context.TWILIO_REGION ? context.TWILIO_REGION.split('-')[0] : '';
-    const hostName = region ? `https://taskrouter.${region}.twilio.com` : 'https://taskrouter.twilio.com';
-    const taskContextURL = `${hostName}/v1/Workspaces/${process.env.TWILIO_FLEX_WORKSPACE_SID}/Tasks/${taskSid}`;
-    let config = {
-      auth: {
-        username: process.env.ACCOUNT_SID,
-        password: process.env.AUTH_TOKEN,
-      },
-    };
-
-    // we need to fetch the task using a rest API because
-    // we need to examine the headers to get the ETag
-    const getResponse = await axios.get(taskContextURL, config);
-    let task = getResponse.data;
-    task.attributes = JSON.parse(getResponse.data.attributes);
-    task.revision = JSON.parse(getResponse.headers.etag);
-    // merge the objects
-    let updatedTaskAttributes = omitBy(merge({}, task.attributes, JSON.parse(attributesUpdate)), isNil);
-
-    // if-match the revision number to ensure
-    // no update collisions
-    config.headers = {
-      'If-Match': task.revision,
-      'content-type': 'application/x-www-form-urlencoded',
-    };
-
-    const data = new URLSearchParams({
-      Attributes: JSON.stringify(updatedTaskAttributes),
-    });
-    task = (await axios.post(taskContextURL, data, config)).data;
+    const task = await taskRouterClient.updateTaskAttributes(config);
 
     return {
-      success: true,
-      status: 200,
+      success: task.success,
+      status: task.status,
       task: {
-        ...task,
-        attributes: JSON.parse(task.attributes),
+        ...task.task,
+        attributes: JSON.parse(task.task.attributes),
       },
     };
   } catch (error) {
-    return retryHandler(error, parameters, arguments.callee);
+    return { success: false, status: error.status, message: error.message };
   }
 };
 
@@ -75,27 +52,67 @@ exports.updateTaskAttributes = async function updateTaskAttributes(parameters) {
  * @description the following method is used to fetch the configured
  *   worker channel
  */
-exports.getWorkerChannels = async function updateWorkerChannel(parameters) {
+exports.getWorkerChannels = async function getWorkerChannels(parameters) {
   const { context, workerSid } = parameters;
+  const region = context.TWILIO_REGION ? context.TWILIO_REGION.split('-')[0] : '';
+  const config = {
+    attempts: 3,
+    workerSid,
+    workspaceSid: context.TWILIO_FLEX_WORKSPACE_SID,
+    accountSid: context.ACCOUNT_SID,
+    authToken: context.AUTH_TOKEN,
+    region,
+  };
 
-  if (!isObject(context)) throw new Error('Invalid parameters object passed. Parameters must contain context object');
-  if (!isString(workerSid))
-    throw new Error('Invalid parameters object passed. Parameters must contain workerSid string');
+  const client = context.getTwilioClient();
+  const taskRouterClient = new TaskRouterUtils(client, config);
 
   try {
-    const client = context.getTwilioClient();
-    const workerChannels = await client.taskrouter.v1
-      .workspaces(process.env.TWILIO_FLEX_WORKSPACE_SID)
-      .workers(workerSid)
-      .workerChannels.list();
+    const task = await taskRouterClient.getWorkerChannels(config);
 
     return {
-      success: true,
-      status: 200,
-      workerChannels,
+      ...task,
     };
   } catch (error) {
-    return retryHandler(error, parameters, exports.getWorkerChannels);
+    return { success: false, status: error.status, message: error.message };
+  }
+};
+
+/**
+ * @param {object} parameters the parameters for the function
+ * @param {number} parameters.attempts the number of retry attempts performed
+ * @param {object} parameters.context the context from calling lambda function
+ * @param {string} parameters.workerSid the worker sid to fetch channels for
+ * @returns {object} worker channel object
+ * @description the following method is used to fetch the configured
+ *   worker channel
+ */
+exports.updateWorkerChannel = async function updateWorkerChannel(parameters) {
+  const { context, workerSid, workerChannelSid, capacity, available } = parameters;
+  const region = context.TWILIO_REGION ? context.TWILIO_REGION.split('-')[0] : '';
+  const config = {
+    attempts: 3,
+    workerSid,
+    workerChannelSid,
+    capacity,
+    available,
+    workspaceSid: context.TWILIO_FLEX_WORKSPACE_SID,
+    accountSid: context.ACCOUNT_SID,
+    authToken: context.AUTH_TOKEN,
+    region,
+  };
+
+  const client = context.getTwilioClient();
+  const taskRouterClient = new TaskRouterUtils(client, config);
+
+  try {
+    const task = await taskRouterClient.updateWorkerChannel(config);
+
+    return {
+      ...task,
+    };
+  } catch (error) {
+    return { success: false, status: error.status, message: error.message };
   }
 };
 
@@ -110,22 +127,28 @@ exports.getWorkerChannels = async function updateWorkerChannel(parameters) {
 
 exports.getQueues = async function getQueues(parameters) {
   const { context } = parameters;
+  const region = context.TWILIO_REGION ? context.TWILIO_REGION.split('-')[0] : '';
+  const config = {
+    limit: 1000,
+    workspaceSid: context.TWILIO_FLEX_WORKSPACE_SID,
+    accountSid: context.ACCOUNT_SID,
+    authToken: context.AUTH_TOKEN,
+    region,
+  };
 
-  if (!isObject(context)) throw new Error('Invalid parameters object passed. Parameters must contain context object');
+  const client = context.getTwilioClient();
+  const taskRouterClient = new TaskRouterUtils(client, config);
 
   try {
-    const client = context.getTwilioClient();
-    const queues = await client.taskrouter.v1
-      .workspaces(process.env.TWILIO_FLEX_WORKSPACE_SID)
-      .taskQueues.list({ limit: 1000 });
+    const taskQueues = await taskRouterClient.getAllQueues(config);
 
     return {
-      success: true,
-      status: 200,
-      queues,
+      success: taskQueues.success,
+      status: taskQueues.status,
+      queues: taskQueues.taskQueueList,
     };
   } catch (error) {
-    return retryHandler(error, parameters, exports.getQueues);
+    return { success: false, status: error.status, message: error.message };
   }
 };
 
@@ -139,29 +162,30 @@ exports.getQueues = async function getQueues(parameters) {
  * @description updates the given task with the given params
  */
 exports.updateTask = async function updateTask(parameters) {
-  const { taskSid, updateParams, context } = parameters;
+  const { attempts, taskSid, updateParams, context } = parameters;
+  const region = context.TWILIO_REGION ? context.TWILIO_REGION.split('-')[0] : '';
+  const config = {
+    attempts: attempts || 3,
+    taskSid,
+    updateParams,
+    workspaceSid: context.TWILIO_FLEX_WORKSPACE_SID,
+    accountSid: context.ACCOUNT_SID,
+    authToken: context.AUTH_TOKEN,
+    region,
+  };
 
-  if (!isString(taskSid))
-    throw new Error('Invalid parameters object passed. Parameters must contain the taskSid string');
-  if (!isObject(updateParams))
-    throw new Error('Invalid parameters object passed. Parameters must contain updateParams object');
-  if (!isObject(context))
-    throw new Error('Invalid parameters object passed. Parameters must contain reason context object');
+  const client = context.getTwilioClient();
+  const taskRouterClient = new TaskRouterUtils(client, config);
 
   try {
-    const client = context.getTwilioClient();
-
-    const task = await client.taskrouter.v1
-      .workspaces(process.env.TWILIO_FLEX_WORKSPACE_SID)
-      .tasks(taskSid)
-      .update(updateParams);
+    const task = await taskRouterClient.updateTask(config);
 
     return {
-      success: true,
-      status: 200,
+      success: task.success,
+      status: task.status,
       task: {
-        ...task,
-        attributes: JSON.parse(task.attributes),
+        ...task.task,
+        attributes: JSON.parse(task.task.attributes),
       },
     };
   } catch (error) {
@@ -173,14 +197,15 @@ exports.updateTask = async function updateTask(parameters) {
     // 20404 error code is returned when the task no longer exists
     // in which case it is also assumed to be completed
     // https://www.twilio.com/docs/api/errors/20404
-    if (error.code === 20001 || error.code === 20404) {
-      console.warn(`${context.PATH}.updateTask(): ${error.message}`);
+    if (error.status === 20001 || error.status === 20404) {
+      const { context } = parameters;
+      console.warn(`${context.PATH}.${arguments.callee.name}(): ${error.message}`);
       return {
         success: true,
         status: 200,
         message: error.message,
       };
     }
-    return retryHandler(error, parameters, exports.updateTask);
+    return { success: false, status: error.status, message: error.message };
   }
 };

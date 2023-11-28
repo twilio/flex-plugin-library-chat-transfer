@@ -1,6 +1,4 @@
-const { isString, isObject, isNumber, isArray } = require('lodash');
-
-const retryHandler = require(Runtime.getFunctions()['twilio-wrappers/retry-handler'].path).retryHandler;
+const { ConversationsUtils } = require('@twilio/flex-plugins-library-utils');
 
 /**
  * @param {object} parameters the parameters for the function
@@ -13,18 +11,20 @@ const retryHandler = require(Runtime.getFunctions()['twilio-wrappers/retry-handl
 exports.getConversation = async function getConversation(parameters) {
   const { context, conversationSid } = parameters;
 
-  if (!isObject(context)) throw new Error('Invalid parameters object passed. Parameters must contain context object');
-  if (!isString(conversationSid))
-    throw new Error('Invalid parameters object passed. Parameters must contain conversationSid string');
+  const config = {
+    attempts: 3,
+    conversationSid,
+  };
+
+  const client = context.getTwilioClient();
+  const conversationClient = new ConversationsUtils(client, config);
 
   try {
-    const client = context.getTwilioClient();
+    const conversation = await conversationClient.getConversation(config);
 
-    const conversation = await client.conversations.v1.conversations(conversationSid).fetch();
-
-    return { success: true, status: 200, conversation };
+    return { ...conversation };
   } catch (error) {
-    return retryHandler(error, parameters, exports.updateAttributes);
+    return { success: false, status: error.status, message: error.message };
   }
 };
 
@@ -40,18 +40,20 @@ exports.getConversation = async function getConversation(parameters) {
 exports.participantList = async function participantList(parameters) {
   const { context, conversationSid, limit } = parameters;
 
-  if (!isObject(context)) throw new Error('Invalid parameters object passed. Parameters must contain context object');
-  if (!isString(conversationSid))
-    throw new Error('Invalid parameters object passed. Parameters must contain conversationSid string value');
-  if (!isNumber(limit)) throw new Error('Invalid parameters object passed. Parameters must contain limit number value');
+  const config = {
+    attempts: 3,
+    conversationSid,
+    limit,
+  };
+
+  const client = context.getTwilioClient();
+  const conversationClient = new ConversationsUtils(client, config);
 
   try {
-    const client = context.getTwilioClient();
-    const participants = await client.conversations.v1.conversations(conversationSid).participants.list({ limit });
-
-    return { success: true, status: 200, participants };
+    const participantList = await conversationClient.getConversationParticipantList(config);
+    return { ...participantList };
   } catch (error) {
-    return retryHandler(error, parameters, exports.participantList);
+    return { success: false, status: error.status, message: error.message };
   }
 };
 
@@ -68,20 +70,20 @@ exports.participantList = async function participantList(parameters) {
 exports.updateAttributes = async function updateAttributes(parameters) {
   const { context, conversationSid, attributes } = parameters;
 
-  if (!isObject(context)) throw new Error('Invalid parameters object passed. Parameters must contain context object');
-  if (!isString(conversationSid))
-    throw new Error('Invalid parameters object passed. Parameters must contain conversationSid string');
-  if (!isString(attributes))
-    throw new Error('Invalid parameters object passed. Parameters must contain attributes string');
+  const config = {
+    attempts: 3,
+    conversationSid,
+    attributes,
+  };
+
+  const client = context.getTwilioClient();
+  const conversationClient = new ConversationsUtils(client, config);
 
   try {
-    const client = context.getTwilioClient();
-
-    const conversation = await client.conversations.v1.conversations(conversationSid).update({ attributes });
-
-    return { success: true, status: 200, conversation };
+    const conversationAttr = await conversationClient.updateConversationAttributes(config);
+    return { ...conversationAttr };
   } catch (error) {
-    return retryHandler(error, parameters, exports.updateAttributes);
+    return { success: false, status: error.status, message: error.message };
   }
 };
 
@@ -101,27 +103,22 @@ exports.updateAttributes = async function updateAttributes(parameters) {
 exports.addWebhook = async function addWebhook(parameters) {
   const { context, conversationSid, method, filters, url, target } = parameters;
 
-  if (!isObject(context)) throw new Error('Invalid parameters object passed. Parameters must contain context object');
-  if (!isString(conversationSid))
-    throw new Error('Invalid parameters object passed. Parameters must contain conversationSid string');
-  if (!isString(method)) throw new Error('Invalid parameters object passed. Parameters must contain method string');
-  if (!isArray(filters)) throw new Error('Invalid parameters object passed. Parameters must contain filters array');
-  if (!isString(url)) throw new Error('Invalid parameters object passed. Parameters must contain url string');
-  if (!isString(target)) throw new Error('Invalid parameters object passed. Parameters must contain target string');
+  const config = {
+    attempts: 3,
+    conversationSid,
+    method,
+    filters,
+    url,
+    target,
+  };
 
+  const client = context.getTwilioClient();
+  const conversationClient = new ConversationsUtils(client, config);
   try {
-    const client = context.getTwilioClient();
-
-    const webhook = await client.conversations.v1.conversations(conversationSid).webhooks.create({
-      'configuration.method': method,
-      'configuration.filters': filters,
-      'configuration.url': url,
-      target,
-    });
-
-    return { success: true, status: 200, webhook };
+    const webhk = await conversationClient.addWebhook(config);
+    return { ...webhk };
   } catch (error) {
-    return retryHandler(error, parameters, exports.addWebhook);
+    return { success: false, status: error.status, message: error.message };
   }
 };
 
@@ -138,19 +135,18 @@ exports.addWebhook = async function addWebhook(parameters) {
 exports.removeWebhook = async function removeWebhook(parameters) {
   const { context, conversationSid, webhookSid } = parameters;
 
-  if (!isObject(context)) throw new Error('Invalid parameters object passed. Parameters must contain context object');
-  if (!isString(conversationSid))
-    throw new Error('Invalid parameters object passed. Parameters must contain conversationSid string');
-  if (!isString(webhookSid))
-    throw new Error('Invalid parameters object passed. Parameters must contain webhookSid string');
+  const config = {
+    attempts: 3,
+    conversationSid,
+    webhookSid,
+  };
 
+  const client = context.getTwilioClient();
+  const conversationClient = new ConversationsUtils(client, config);
   try {
-    const client = context.getTwilioClient();
-
-    const webhook = await client.conversations.v1.conversations(conversationSid).webhooks(webhookSid).remove();
-
-    return { success: true, status: 200, webhook };
+    const webhk = await conversationClient.removeWebhook(config);
+    return { ...webhk };
   } catch (error) {
-    return retryHandler(error, parameters, exports.removeWebhook);
+    return { success: false, status: error.status, message: error.message };
   }
 };

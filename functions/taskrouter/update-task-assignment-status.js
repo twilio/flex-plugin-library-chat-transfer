@@ -22,7 +22,6 @@ exports.handler = prepareFlexFunction(requiredParameters, async (context, event,
     response.setBody({ ...extractStandardResponse(result) });
     return callback(null, response);
   } catch (error) {
-    console.log(error);
     response.setStatusCode(500);
     response.setBody({ data: null, message: error.message });
     return callback(null, response);

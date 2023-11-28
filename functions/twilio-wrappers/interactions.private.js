@@ -1,7 +1,4 @@
-const { isString, isObject, isNumber } = require('lodash');
-
-const retryHandler = require(Runtime.getFunctions()['twilio-wrappers/retry-handler'].path).retryHandler;
-
+const { InteractionUtils } = require('@twilio/flex-plugins-library-utils');
 /**
  * @param {object} parameters the parameters for the function
  * @param {number} parameters.attempts the number of retry attempts performed
@@ -15,26 +12,26 @@ const retryHandler = require(Runtime.getFunctions()['twilio-wrappers/retry-handl
 exports.participantCreateInvite = async function participantCreateInvite(parameters) {
   const { context, interactionSid, channelSid, routing } = parameters;
 
-  if (!isObject(context)) throw new Error('Invalid parameters object passed. Parameters must contain context object');
-  if (!isString(interactionSid))
-    throw new Error('Invalid parameters object passed. Parameters must contain interactionSid string value');
-  if (!isString(channelSid))
-    throw new Error('Invalid parameters object passed. Parameters must contain channelSid string value');
-  if (!isObject(routing)) throw new Error('Invalid parameters object passed. Parameters must contain routing object');
+  const config = {
+    attempts: 3,
+    interactionSid,
+    channelSid,
+    routing,
+  };
+
+  const client = context.getTwilioClient();
+  if (client.edge && client.region === 'stage-us1') {
+    delete client.edge;
+    client.region = 'stage';
+  }
+  const interactionClient = new InteractionUtils(client, config);
 
   try {
-    const client = context.getTwilioClient();
-    if (client.edge && client.region === 'stage-us1') {
-      delete client.edge;
-      client.region = 'stage';
-    }
-    const participantInvite = await client.flexApi.v1.interaction(interactionSid).channels(channelSid).invites.create({
-      routing,
-    });
+    const participantInvite = await interactionClient.participantCreateInvite(config);
 
-    return { success: true, status: 200, participantInvite };
+    return { ...participantInvite };
   } catch (error) {
-    return retryHandler(error, parameters, exports.participantCreateInvite);
+    return { success: false, status: error.status, message: error.message };
   }
 };
 
@@ -52,31 +49,26 @@ exports.participantCreateInvite = async function participantCreateInvite(paramet
 exports.participantUpdate = async function participantUpdate(parameters) {
   const { context, interactionSid, channelSid, participantSid, status } = parameters;
 
-  if (!isObject(context)) throw new Error('Invalid parameters object passed. Parameters must contain context object');
-  if (!isString(interactionSid))
-    throw new Error('Invalid parameters object passed. Parameters must contain interactionSid string value');
-  if (!isString(channelSid))
-    throw new Error('Invalid parameters object passed. Parameters must contain channelSid string value');
-  if (!isString(participantSid))
-    throw new Error('Invalid parameters object passed. Parameters must contain participantSid string value');
-  if (!isString(status))
-    throw new Error('Invalid parameters object passed. Parameters must contain status string value');
+  const config = {
+    attempts: 3,
+    interactionSid,
+    channelSid,
+    participantSid,
+    status,
+  };
 
+  const client = context.getTwilioClient();
+  if (client.edge && client.region === 'stage-us1') {
+    delete client.edge;
+    client.region = 'stage';
+  }
+  const interactionClient = new InteractionUtils(client, config);
   try {
-    const client = context.getTwilioClient();
-    if (client.edge && client.region === 'stage-us1') {
-      delete client.edge;
-      client.region = 'stage';
-    }
-    const updatedParticipant = await client.flexApi.v1
-      .interaction(interactionSid)
-      .channels(channelSid)
-      .participants(participantSid)
-      .update({ status });
+    const participantInvite = await interactionClient.participantUpdate(config);
 
-    return { success: true, status: 200, updatedParticipant };
+    return { ...participantInvite };
   } catch (error) {
-    return retryHandler(error, parameters, exports.participantUpdate);
+    return { success: false, status: error.status, message: error.message };
   }
 };
 
@@ -93,24 +85,24 @@ exports.participantUpdate = async function participantUpdate(parameters) {
 exports.channelUpdate = async function channelUpdate(parameters) {
   const { context, interactionSid, channelSid, status } = parameters;
 
-  if (!isObject(context)) throw new Error('Invalid parameters object passed. Parameters must contain context object');
-  if (!isString(interactionSid))
-    throw new Error('Invalid parameters object passed. Parameters must contain interactionSid string value');
-  if (!isString(channelSid))
-    throw new Error('Invalid parameters object passed. Parameters must contain channelSid string value');
-  if (!isString(status))
-    throw new Error('Invalid parameters object passed. Parameters must contain status string value');
+  const config = {
+    attempts: 3,
+    interactionSid,
+    channelSid,
+    status,
+  };
 
+  const client = context.getTwilioClient();
+  if (client.edge && client.region === 'stage-us1') {
+    delete client.edge;
+    client.region = 'stage';
+  }
+  const interactionClient = new InteractionUtils(client, config);
   try {
-    const client = context.getTwilioClient();
-    if (client.edge && client.region === 'stage-us1') {
-      delete client.edge;
-      client.region = 'stage';
-    }
-    const updatedChannel = await client.flexApi.v1.interaction(interactionSid).channels(channelSid).update({ status });
+    const channelUpdated = await interactionClient.channelUpdate(config);
 
-    return { success: true, status: 200, updatedChannel };
+    return { ...channelUpdated };
   } catch (error) {
-    return retryHandler(error, parameters, exports.channelUpdate);
+    return { success: false, status: error.status, message: error.message };
   }
 };
