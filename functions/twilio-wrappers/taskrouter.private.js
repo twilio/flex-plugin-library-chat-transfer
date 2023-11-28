@@ -13,11 +13,15 @@ const { TaskRouterUtils } = require('@twilio/flex-plugins-library-utils');
  */
 exports.updateTaskAttributes = async function updateTaskAttributes(parameters) {
   const { context, attempts, taskSid, attributesUpdate } = parameters;
-  // const region = context.TWILIO_REGION ? context.TWILIO_REGION.split('-')[0] : '';
+  const region = context.TWILIO_REGION ? context.TWILIO_REGION.split('-')[0] : '';
   const config = {
     attempts: attempts || 3,
     taskSid,
     attributesUpdate,
+    workspaceSid: context.TWILIO_FLEX_WORKSPACE_SID,
+    accountSid: context.ACCOUNT_SID,
+    authToken: context.AUTH_TOKEN,
+    region,
   };
 
   const client = context.getTwilioClient();
@@ -50,10 +54,14 @@ exports.updateTaskAttributes = async function updateTaskAttributes(parameters) {
  */
 exports.getWorkerChannels = async function getWorkerChannels(parameters) {
   const { context, workerSid } = parameters;
-
+  const region = context.TWILIO_REGION ? context.TWILIO_REGION.split('-')[0] : '';
   const config = {
     attempts: 3,
     workerSid,
+    workspaceSid: context.TWILIO_FLEX_WORKSPACE_SID,
+    accountSid: context.ACCOUNT_SID,
+    authToken: context.AUTH_TOKEN,
+    region,
   };
 
   const client = context.getTwilioClient();
@@ -81,13 +89,17 @@ exports.getWorkerChannels = async function getWorkerChannels(parameters) {
  */
 exports.updateWorkerChannel = async function updateWorkerChannel(parameters) {
   const { context, workerSid, workerChannelSid, capacity, available } = parameters;
-
+  const region = context.TWILIO_REGION ? context.TWILIO_REGION.split('-')[0] : '';
   const config = {
     attempts: 3,
     workerSid,
     workerChannelSid,
     capacity,
     available,
+    workspaceSid: context.TWILIO_FLEX_WORKSPACE_SID,
+    accountSid: context.ACCOUNT_SID,
+    authToken: context.AUTH_TOKEN,
+    region,
   };
 
   const client = context.getTwilioClient();
@@ -115,9 +127,13 @@ exports.updateWorkerChannel = async function updateWorkerChannel(parameters) {
 
 exports.getQueues = async function getQueues(parameters) {
   const { context } = parameters;
-
+  const region = context.TWILIO_REGION ? context.TWILIO_REGION.split('-')[0] : '';
   const config = {
     limit: 1000,
+    workspaceSid: context.TWILIO_FLEX_WORKSPACE_SID,
+    accountSid: context.ACCOUNT_SID,
+    authToken: context.AUTH_TOKEN,
+    region,
   };
 
   const client = context.getTwilioClient();
@@ -147,11 +163,15 @@ exports.getQueues = async function getQueues(parameters) {
  */
 exports.updateTask = async function updateTask(parameters) {
   const { attempts, taskSid, updateParams, context } = parameters;
-
+  const region = context.TWILIO_REGION ? context.TWILIO_REGION.split('-')[0] : '';
   const config = {
     attempts: attempts || 3,
     taskSid,
     updateParams,
+    workspaceSid: context.TWILIO_FLEX_WORKSPACE_SID,
+    accountSid: context.ACCOUNT_SID,
+    authToken: context.AUTH_TOKEN,
+    region,
   };
 
   const client = context.getTwilioClient();
