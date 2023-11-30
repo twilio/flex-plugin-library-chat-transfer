@@ -130,7 +130,7 @@ exports.getQueues = async function getQueues(parameters) {
   const region = context.TWILIO_REGION ? context.TWILIO_REGION.split('-')[0] : '';
   const config = {
     limit: 1000,
-    workspaceSid: context.TWILIO_FLEX_WORKSPACE_SID,
+    flexWorkSpaceSid: context.TWILIO_FLEX_WORKSPACE_SID,
     accountSid: context.ACCOUNT_SID,
     authToken: context.AUTH_TOKEN,
     region,
