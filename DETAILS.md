@@ -15,13 +15,11 @@ Plugin is ready to use once it is installed and the browser window is refreshed.
 ### Installation
 During installation, 4 fields are required:
 
- 1. *TaskRouter Workspace SID*: This is the SID of the "Flex Task Assignment" workspace that you see in [Twilio Console > TaskRouter > Workspaces](https://console.twilio.com/us1/develop/taskrouter/workspaces)
+ 1. *TaskRouter Chat Transfer Workflow SID*: You may want to create a new [TaskRouter Workflow](#taskrouter-workflow) for chat transfer or use the default workflow in [Twilio Console > TaskRouter > Workspaces > Flex Task Assignment](https://console.twilio.com/us1/develop/taskrouter/workspaces) > Workflows > Assign to Anyone and chose its SID.
 
- 2. *TaskRouter Chat Transfer Workflow SID*: You may want to create a new [TaskRouter Workflow](#taskrouter-workflow) for chat transfer or use the default workflow in [Twilio Console > TaskRouter > Workspaces > Flex Task Assignment](https://console.twilio.com/us1/develop/taskrouter/workspaces) > Workflows > Assign to Anyone and get its SID.
+ 2. *Cold Transfer*: Enables a *transfer* icon for the task header that can be used to implement cold/blind transfer. Enter *Enable* or *Disable* in the text box.
 
- 3. *Cold Transfer*: Enables a *transfer* icon for the task header that can be used to implement cold/blind transfer. Enter *Enable* or *Disable* in the text box.
-
- 4. *Multi Participant*: Enables a participants tab for adding agents or removing them from the conversation. Enter *Enable* or *Disable* in the text box.
+ 3. *Multi Participant*: Enables a participants tab for adding agents or removing them from the conversation. Enter *Enable* or *Disable* in the text box.
 
  **Please Note**
 At least one of cold or warm transfer should be *Enabled* otherwise the transfer button will not be added to the conversation header.
