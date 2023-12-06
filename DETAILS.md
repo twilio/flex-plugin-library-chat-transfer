@@ -13,7 +13,7 @@ Plugin is ready to use once it is installed and the browser window is refreshed.
 - Chat history is visible to the transferred agent.
 
 ### Installation
-During installation, 4 fields are required:
+During installation, 3 fields are required:
 
  1. *TaskRouter Chat Transfer Workflow SID*: You may want to create a new [TaskRouter Workflow](#taskrouter-workflow) for chat transfer or use the default workflow in [Twilio Console > TaskRouter > Workspaces > Flex Task Assignment](https://console.twilio.com/us1/develop/taskrouter/workspaces) > Workflows > Assign to Anyone and chose its SID.
 
